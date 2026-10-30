@@ -1,0 +1,67 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.3/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!node_modules",
+      ".vscode/**/*",
+      "!.next",
+      "!dist",
+      "!build",
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "css": {
+    "formatter": {
+      "indentStyle": "space"
+    },
+    "parser": {
+      "tailwindDirectives": true,
+      "allowWrongLineComments": true,
+      "cssModules": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "nursery": {
+        "useTailwindSortedClasses": {
+          "level": "error"
+        }
+      }
+    }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "tailwind": {
+    "attributes": [
+      "class",
+      "className",
+      "classList"
+    ],
+    "mergeFunctions": [
+      "clsx",
+      "tw"
+    ],
+    "variantFunctions": [
+      "cva"
+    ]
+  }
+}
+

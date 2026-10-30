@@ -1,0 +1,153 @@
+{
+  "name": "keltra",
+  "version": "0.1.0",
+  "description": "Typed asset paths for modern frontend frameworks.",
+  "keywords": [
+    "assets",
+    "typescript",
+    "typed-paths",
+    "vite",
+    "nextjs",
+    "image",
+    "codegen"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "bin": {
+    "keltra": "./dist/cli/index.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    },
+    "./vite": {
+      "types": "./dist/integrations/vite.d.mts",
+      "default": "./dist/integrations/vite.mjs"
+    },
+    "./next": {
+      "types": "./dist/integrations/next.d.mts",
+      "default": "./dist/integrations/next.mjs"
+    },
+    "./webpack": {
+      "types": "./dist/integrations/webpack.d.mts",
+      "default": "./dist/integrations/webpack.mjs"
+    },
+    "./nuxt": {
+      "types": "./dist/integrations/nuxt.d.mts",
+      "default": "./dist/integrations/nuxt.mjs"
+    },
+    "./astro": {
+      "types": "./dist/integrations/astro.d.mts",
+      "default": "./dist/integrations/astro.mjs"
+    },
+    "./sveltekit": {
+      "types": "./dist/integrations/sveltekit.d.mts",
+      "default": "./dist/integrations/sveltekit.mjs"
+    },
+    "./image": {
+      "types": "./dist/image/index.d.mts",
+      "default": "./dist/image/index.mjs"
+    },
+    "./image/next": {
+      "types": "./dist/image/next.d.mts",
+      "default": "./dist/image/next.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "vite": [
+        "./dist/integrations/vite.d.mts"
+      ],
+      "next": [
+        "./dist/integrations/next.d.mts"
+      ],
+      "webpack": [
+        "./dist/integrations/webpack.d.mts"
+      ],
+      "nuxt": [
+        "./dist/integrations/nuxt.d.mts"
+      ],
+      "astro": [
+        "./dist/integrations/astro.d.mts"
+      ],
+      "sveltekit": [
+        "./dist/integrations/sveltekit.d.mts"
+      ],
+      "image": [
+        "./dist/image/index.d.mts"
+      ],
+      "image/next": [
+        "./dist/image/next.d.mts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "start": "bun run ./src/cli/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "prepack": "cp ../../README.md ./README.md",
+    "lint": "biome check .",
+    "clean": "rm -rf .turbo dist node_modules"
+  },
+  "peerDependencies": {
+    "@sveltejs/kit": ">=2",
+    "astro": ">=4",
+    "next": ">=14",
+    "nuxt": ">=3",
+    "react": ">=18",
+    "vite": ">=5",
+    "webpack": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "@sveltejs/kit": {
+      "optional": true
+    },
+    "astro": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    },
+    "nuxt": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "vite": {
+      "optional": true
+    },
+    "webpack": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "tsdown": "^0.23.4"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^8.7.5",
+    "@plekta/utils": "^0.0.4",
+    "chalk": "^6.0.1",
+    "chokidar": "^6.0.0",
+    "commander": "^15.0.0",
+    "jiti": "^2.7.0",
+    "tinyglobby": "^0.2.17"
+  }
+}

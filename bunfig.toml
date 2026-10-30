@@ -1,0 +1,7 @@
+[install]
+# Keep dev tooling out of the published package: only "packages/keltra"
+# is published, everything else is private workspace code.
+
+[test]
+# Only run tests that live in the library, not in examples or docs.
+root = "packages"

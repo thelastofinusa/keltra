@@ -1,6 +1,44 @@
-node_modules
-dist
-.turbo
+# Dependencies
+node_modules/
+
+# Build output
+dist/
 *.tsbuildinfo
-coverage
-DS_Store
+
+# keltra generated files (in examples and local testing)
+.keltra/
+
+# Framework output
+.next/
+.nuxt/
+.output/
+.svelte-kit/
+.astro/
+.vercel/
+
+# Docs (VitePress)
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+
+# Tests
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors (keep shared settings)
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+pack.md
