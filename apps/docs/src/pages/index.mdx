@@ -1,0 +1,34 @@
+---
+layout: blank
+description: keltra generates a typed manifest from your asset folders — so imports autocomplete, missing files fail the build, and you never ship a broken image reference again.
+showAskAi: false
+showBanner: false
+showLogo: false
+---
+
+import { Landing } from '../components/landing'
+
+<Landing
+  agentPrompt="Read https://keltra.vercel.app/introduction/getting-started and set up Keltra for my project."
+  description="You know the bug: someone renames hero.png to hero-2x.png, the build passes, and the image 404s in production three days later. keltra makes that impossible."
+  docsHref="/introduction/getting-started"
+  logoSuffix={
+    <span className="vocs:text-[13px] vocs:font-medium vocs:text-muted">
+      by{' '}
+      <a
+        href="https://thelastofinusa.vercel.app"
+        className="vocs:text-muted vocs:no-underline vocs:transition-colors vocs:duration-100 vocs:hover:text-heading"
+      >
+        Osilama
+      </a>
+    </span>
+  }
+  title={
+    <>
+      Autocomplete for your Web Assets
+    </>
+  }
+  packageName="keltra"
+  packageType="init"
+/>
+
