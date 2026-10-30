@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { createJiti } from "jiti";
-import type { KeltraConfig } from "./types";
 import { pkg } from "../pkg.config";
+import type { KeltraConfig } from "./types";
 
 export const CONFIG_FILES = [
   `${pkg.name}.config.ts`,
@@ -12,7 +12,9 @@ export const CONFIG_FILES = [
 ];
 
 /** Returns the absolute path of the project's keltra config, if there is one. */
-export function findConfigFile(root: string = process.cwd()): string | undefined {
+export function findConfigFile(
+  root: string = process.cwd(),
+): string | undefined {
   for (const name of CONFIG_FILES) {
     const file = join(resolve(root), name);
     if (existsSync(file)) return file;

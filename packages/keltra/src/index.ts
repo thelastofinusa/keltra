@@ -1,12 +1,12 @@
 export { defineConfig } from "./core/config";
-export type { KeltraConfig, AssetDir } from "./core/types";
+export type { AssetDir, KeltraConfig } from "./core/types";
 
 /**
  * Filled in by the generated `.keltra/register.d.ts`, which adds a `paths`
  * union of every asset in your project. Until you run the dev server
  * (or `keltra generate`), paths fall back to plain `string`.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+// biome-ignore lint/suspicious/noEmptyInterface: disable-no-empty-object-type
 export interface Register {}
 
 /** Union of every asset path in your project, e.g. "/images/hero.png". */

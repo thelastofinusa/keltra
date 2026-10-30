@@ -1,15 +1,15 @@
 import { resolveConfig } from "./config";
 import { generate } from "./generate";
-import { watchAssets } from "./watcher";
-import type { AssetWatcher } from "./watcher";
 import type { GenerateResult, KeltraConfig, ResolvedConfig } from "./types";
+import type { AssetWatcher } from "./watcher";
+import { watchAssets } from "./watcher";
 
 export { defineConfig, resolveConfig } from "./config";
 export { generate, renderManifest } from "./generate";
 export { scanAssets } from "./scanner";
-export { watchAssets } from "./watcher";
-export type { AssetWatcher } from "./watcher";
 export type * from "./types";
+export type { AssetWatcher } from "./watcher";
+export { watchAssets } from "./watcher";
 
 export interface Keltra {
   config: ResolvedConfig;

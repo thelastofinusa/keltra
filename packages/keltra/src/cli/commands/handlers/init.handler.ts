@@ -14,10 +14,8 @@ import {
 } from "@plekta/utils";
 import chalk from "chalk";
 import type { Command } from "commander";
-import {
-  createKeltra,
-  type KeltraConfig,
-} from "../../../core";
+import { createKeltra, type KeltraConfig } from "../../../core";
+import { findConfigFile, loadConfig } from "../../../core/load-config";
 import { pkg } from "../../../pkg.config";
 import { createCommandTitle } from "../../core/cli";
 import { exitWithError, KeltraError } from "../../core/errors";
@@ -29,7 +27,6 @@ import {
   hasDependency,
   readPackageJson,
 } from "../../core/project";
-import { findConfigFile, loadConfig } from "../../../core/load-config";
 
 const execFileAsync = promisify(execFile);
 
@@ -40,7 +37,10 @@ async function installPackage(root: string, name: string): Promise<void> {
   const [executable, ...args] = pm.installer.split(" ");
 
   if (!executable) {
-    throw new KeltraError("INSTALL_FAILED", "Could not detect a package manager.");
+    throw new KeltraError(
+      "INSTALL_FAILED",
+      "Could not detect a package manager.",
+    );
   }
 
   try {
@@ -237,7 +237,7 @@ export const initCommand = () => {
 
       nextSteps.push({
         title: `Include ${chalk.cyan(".keltra")} in your tsconfig.json`,
-        description: '"include": ["src", ".keltra"]',
+        description: '"include": ["src", ".keltra/*.d.ts"]',
       });
 
       nextSteps.push(

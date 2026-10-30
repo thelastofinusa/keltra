@@ -1,5 +1,3 @@
-// packages/keltra/src/core/types.ts
-
 /** A folder to scan, optionally mapped to a URL prefix. */
 export interface AssetDir {
   /** Folder path, relative to the project root. */

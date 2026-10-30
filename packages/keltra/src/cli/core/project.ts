@@ -113,7 +113,10 @@ export const FRAMEWORKS: FrameworkInfo[] = [
 ];
 
 export function getFramework(value: Framework): FrameworkInfo {
-  return FRAMEWORKS.find((f) => f.value === value) ?? FRAMEWORKS[FRAMEWORKS.length - 1]!;
+  return (
+    FRAMEWORKS.find((f) => f.value === value) ??
+    FRAMEWORKS[FRAMEWORKS.length - 1]!
+  );
 }
 
 export interface ProjectPackageJson {

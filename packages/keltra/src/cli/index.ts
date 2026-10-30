@@ -3,9 +3,9 @@
 import { checkForUpdate, onCancel, showTree, symbols } from "@plekta/utils";
 import chalk from "chalk";
 import { Command } from "commander";
+import { pkg } from "../pkg.config";
 import { commandHandlers } from "./commands";
 import { resolveCommandName } from "./core/cli";
-import { pkg } from "../pkg.config";
 
 const invoked = process.argv[2] ?? "";
 const SKIP_PASSIVE_CHECK = new Set(["update", "-h", "--help"]);

@@ -5,16 +5,16 @@ import type { PathsForPages } from 'waku/router'
 
 // prettier-ignore
 type Page =
-  | { path: '/'; render: 'static' }
-  | { path: '/introduction/getting-started'; render: 'static' }
-  | { path: '/introduction/what-is-keltra'; render: 'static' }
+  | { path: "/"; render: "static" }
+  | { path: "/introduction/getting-started"; render: "static" }
+  | { path: "/introduction/what-is-keltra"; render: "static" };
 
 // prettier-ignore
-declare module 'waku/router' {
+declare module "waku/router" {
   interface RouteConfig {
-    paths: PathsForPages<Page>
+    paths: PathsForPages<Page>;
   }
   interface CreatePagesConfig {
-    pages: Page
+    pages: Page;
   }
 }

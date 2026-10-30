@@ -9,10 +9,10 @@ import {
 import chalk from "chalk";
 import type { Command } from "commander";
 import { createKeltra } from "../../../core";
+import { loadConfig } from "../../../core/load-config";
 import { pkg } from "../../../pkg.config";
 import { createCommandTitle } from "../../core/cli";
 import { exitWithError, KeltraError } from "../../core/errors";
-import { loadConfig } from "../../../core/load-config";
 
 const plural = (count: number, word: string) =>
   `${count} ${word}${count === 1 ? "" : "s"}`;

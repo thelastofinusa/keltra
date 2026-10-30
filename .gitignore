@@ -42,3 +42,5 @@ Thumbs.db
 !.vscode/settings.json
 !.vscode/extensions.json
 pack.md
+
+.turbo
