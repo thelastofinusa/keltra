@@ -50,10 +50,10 @@ export default defineConfig({
   },
   baseUrl:
     process.env.VERCEL_ENV === 'production'
-      ? 'https://keltra.vercel.app'
+      ? 'https://usekeltra.vercel.app'
       : process.env.VERCEL_URL
         ? `https://${process.env.VERCEL_URL}`
-        : 'https://keltra.vercel.app',
+        : 'https://usekeltra.vercel.app',
   cacheDir: '.vocs/cache',
   changelog: Changelog.github({ repo: 'thelastofinusa/keltra-monorepo' }),
   checkDeadlinks: true,
@@ -63,13 +63,13 @@ export default defineConfig({
       console.log(data)
     },
   }),
-  description: 'Vocs is a library for creating documentation websites.',
+  description: 'keltra generates a typed manifest from your asset folders — so imports autocomplete, missing files fail the build, and you never ship a broken image reference again.',
   editLink: {
-    link: 'https://github.com/thelastofinusa/keltra-monorepo/edit/rc/site/src/pages/:path',
+    link: 'https://github.com/thelastofinusa/keltra-monorepo/edit/main/apps/docs/src/pages/:path',
   },
   topNav: [
     {
-      text: 'Guides & API',
+      text: 'Guides',
       link: '/introduction/getting-started',
       match: (path) =>
         Boolean(
