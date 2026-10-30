@@ -2,9 +2,7 @@
 
 Typed asset paths for modern frontend frameworks.
 
-keltra scans your asset folders and generates a typed manifest, so every
-image and file path in your code gets autocomplete and type-checking.
-Works with Vite, Next.js, and more, from a single package.
+keltra scans your asset folders and generates a typed manifest, so every image and file path in your code gets autocomplete and type-checking. Works with Vite, Next.js, and more, from a single package.
 
 > **Status:** v2 rewrite in progress. The API below is a draft and may change.
 
