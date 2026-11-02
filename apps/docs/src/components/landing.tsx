@@ -2,11 +2,11 @@
 
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { Link, Prompt, useConfig } from "vocs";
-import { LuArrowUpRight } from "react-icons/lu";
 import { FaGithub } from "react-icons/fa6";
-import { IoCopyOutline, IoCheckmark } from "react-icons/io5";
-import { SiNpm, SiPnpm, SiBun, SiYarn } from "react-icons/si";
+import { IoCheckmark, IoCopyOutline } from "react-icons/io5";
+import { LuArrowUpRight } from "react-icons/lu";
+import { SiBun, SiNpm, SiPnpm, SiYarn } from "react-icons/si";
+import { Link, Prompt, useConfig } from "vocs";
 
 type PackageManager = "npm" | "pnpm" | "bun" | "yarn";
 type PackageType = "init" | "install";
@@ -27,10 +27,10 @@ function getPackageCommand(
   type: PackageType,
 ) {
   if (type === "init") {
-    if (packageManager === "npm") return `npm ${name} init`;
-    if (packageManager === "yarn") return `yarn ${name} init`;
-    if (packageManager === "pnpm") return `pnpm ${name} init`;
-    return `bun ${name} init`;
+    if (packageManager === "npm") return `npx ${name} init`;
+    if (packageManager === "yarn") return `yarn dlx ${name} init`;
+    if (packageManager === "pnpm") return `pnpm dlx ${name} init`;
+    return `bunx ${name} init`;
   }
 
   if (packageManager === "npm") return `npm install ${name}`;
@@ -121,8 +121,7 @@ export function Landing(props: Landing.Props) {
             <h1 className="vocs:m-0 vocs:mb-[18px] vocs:text-[clamp(40px,5.6vw,68px)] vocs:font-semibold vocs:leading-[0.96] vocs:tracking-[-0.025em] vocs:text-heading vocs:max-[700px]:text-[clamp(40px,12vw,54px)]">
               {title}
             </h1>
-            {/* <p className="vocs:m-0 vocs:mb-8 vocs:text-lg vocs:leading-[1.6] vocs:text-secondary vocs:max-[700px]:text-[17px]"> */}
-            <p className="mb-8 text-lg leading-[1.6] text-secondary">
+            <p className="vocs:m-0 vocs:mb-8 vocs:text-lg vocs:leading-[1.6] vocs:text-secondary vocs:max-[700px]:text-[17px]">
               {description}
             </p>
 
@@ -131,17 +130,18 @@ export function Landing(props: Landing.Props) {
                 to={props.docsHref}
                 className="vocs:inline-flex vocs:min-h-11 vocs:items-center vocs:justify-center vocs:gap-2.5 vocs:rounded-[var(--vocs-radius-lg)] vocs:border vocs:border-solid vocs:border-accent vocs:bg-accent vocs:px-[20px] vocs:text-[15px] vocs:font-medium vocs:text-accentInvert vocs:no-underline vocs:transition-opacity vocs:duration-100 vocs:hover:opacity-90 vocs:max-[700px]:w-full vocs:[&_svg]:size-3.5"
               >
-                Read the docs
+                <span>Read the docs</span>
                 <LuArrowUpRight aria-hidden />
               </Link>
               {github && (
                 <a
                   href={github.link}
                   target="_blank"
-                  className="vocs:inline-flex vocs:min-h-11 vocs:items-center vocs:justify-center vocs:gap-2.5 vocs:rounded-[var(--vocs-radius-lg)] vocs:border vocs:border-solid vocs:border-primary vocs:bg-surface vocs:px-[20px] vocs:text-[15px] vocs:font-medium vocs:text-heading vocs:no-underline vocs:transition-colors vocs:duration-100 vocs:hover:border-secondary vocs:hover:bg-surfaceTint vocs:max-[700px]:w-full vocs:[&_svg]:size-3.5"
+                  className="vocs:inline-flex vocs:min-h-11 vocs:items-center vocs:justify-center vocs:gap-2.5 vocs:rounded-[var(--vocs-radius-lg)] vocs:border vocs:border-solid vocs:border-primary vocs:bg-surface vocs:px-[20px] vocs:text-[15px] vocs:font-medium vocs:text-heading vocs:no-underline vocs:transition-colors vocs:duration-100 vocs:hover:border-secondary vocs:hover:bg-surfaceTint vocs:max-[700px]:w-full vocs:[&_svg]:size-4"
+                  rel="noopener"
                 >
                   <FaGithub aria-hidden />
-                  GitHub
+                  <span>GitHub</span>
                 </a>
               )}
             </div>

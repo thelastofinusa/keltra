@@ -1,1 +1,16 @@
-# What is Keltra [Learn why Keltra exists, when and how to use it]
+# What is Keltra [Typed asset paths for modern frontend frameworks.]
+
+keltra scans your asset folders and generates a typed manifest, so every image and file path in your code gets autocomplete and type-checking. Works with Vite, Next.js, and more, from a single package.
+
+## How it works
+
+1. You add the keltra integration for your framework.
+2. When you start your dev server, keltra scans your asset folders and
+   generates a type manifest (types plus a small runtime module) into `.keltra/`.
+3. While the server runs, keltra watches the folders and regenerates the
+   manifest whenever you add, rename, or delete a file.
+4. Production builds generate the manifest too, so type errors for missing
+   assets show up in CI. You can also run `npx keltra generate` on its own.
+
+Use whichever API you prefer: a typed `assetPath()` helper, or a drop-in
+`<Image>` component. Both read the same generated manifest

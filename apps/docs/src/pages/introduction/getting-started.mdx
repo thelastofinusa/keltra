@@ -1,1 +1,75 @@
-# Getting Started [Install Keltra]
+# Getting Started [Learn when and how to use it]
+
+> **Status:** v2 rewrite in progress. The API below is a draft and may change.
+
+## Install
+
+```bash
+bun add keltra
+```
+
+Or let the CLI set everything up for you:
+
+```bash
+npx keltra init
+```
+
+The CLI detects your framework, adds the config, and installs what's needed.
+
+## Usage
+
+1. Add the integration
+
+- **Vite**
+
+  ```ts
+  // vite.config.ts
+  import { defineConfig } from "vite";
+  import keltra from "keltra/vite";
+
+  export default defineConfig({
+    plugins: [keltra()],
+  });
+  ```
+
+- **Next.js**
+
+  ```ts
+  // next.config.ts
+  import { withKeltra } from "keltra/next";
+
+  export default withKeltra({
+    // your Next.js config
+  });
+  ```
+
+2. Use typed paths
+
+- **`assetPath`: no component required**
+
+  ```ts
+  import { assetPath } from "keltra";
+
+  const logo = assetPath("/images/logo.svg"); // autocompletes, returns the URL
+
+  assetPath("/images/lgo.svg"); // type error: no such asset
+  ```
+
+  Use it anywhere a string path is expected: `<img src>`, CSS-in-JS,
+  metadata, Open Graph tags, and so on.
+
+- **`<Image>` component**
+
+  ```tsx
+  import { Image } from "keltra/image";
+
+  export function Hero() {
+    // `src` autocompletes from the files in your asset folders
+    return (
+      <Image src="/images/hero.png" alt="Hero" width={1200} height={600} />
+    );
+  }
+  ```
+
+  On Next.js, import from `keltra/image/next` to get a component that wraps
+  `next/image` with the same typed `src`.
