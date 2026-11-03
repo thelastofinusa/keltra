@@ -13,11 +13,12 @@
       "dependsOn": ["^clean"]
     },
     "typecheck": {
-      "dependsOn": ["^clean"]
+      "dependsOn": ["^build"]
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": ["^build"]
     },
     "build:watch": {
       "cache": false,

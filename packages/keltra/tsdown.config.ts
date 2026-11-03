@@ -7,7 +7,7 @@ export default defineConfig({
     index: "src/index.ts",
 
     // Framework integrations (thin wrappers over core)
-    // "integrations/vite": "src/integrations/vite.ts",
+    "integrations/vite": "src/integrations/vite.ts",
     // "integrations/next": "src/integrations/next.ts",
     // "integrations/webpack": "src/integrations/webpack.ts",
     // "integrations/nuxt": "src/integrations/nuxt.ts",

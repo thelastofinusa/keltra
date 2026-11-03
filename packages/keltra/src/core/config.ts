@@ -27,10 +27,7 @@ export const DEFAULT_EXTENSIONS = [
 
 export const DEFAULT_IGNORE = ["**/node_modules/**"];
 
-/** Identity helper so config files get autocomplete. */
-export function defineConfig(config: KeltraConfig): KeltraConfig {
-  return config;
-}
+export { defineConfig } from "./define-config";
 
 /** "/", "" -> ""   "images/" -> "/images"   "/a/b/" -> "/a/b" */
 function normalizePrefix(prefix: string | undefined): string {

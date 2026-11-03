@@ -1,4 +1,4 @@
-export { defineConfig } from "./core/config";
+export { defineConfig } from "./core/define-config";
 export type { AssetDir, KeltraConfig } from "./core/types";
 
 /**
