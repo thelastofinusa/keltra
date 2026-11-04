@@ -35,10 +35,44 @@ export default defineConfig({
         { text: "Getting Started", link: "/introduction/getting-started" },
       ],
     },
+    {
+      text: "Guides",
+      collapsed: false,
+      items: [
+        { text: "Vite", link: "/guides/vite" },
+        { text: "Framework support", link: "/guides/frameworks" },
+        { text: "Deployment", link: "/guides/deployment" },
+        { text: "Continuous integration", link: "/guides/ci" },
+        { text: "Troubleshooting", link: "/guides/troubleshooting" },
+      ],
+    },
+    {
+      text: "Reference",
+      collapsed: false,
+      items: [
+        { text: "Configuration", link: "/reference/config" },
+        { text: "assetPath", link: "/reference/asset-path" },
+        { text: "Image", link: "/reference/image" },
+        { text: "CLI", link: "/reference/cli" },
+        { text: "Vite plugin", link: "/reference/vite-plugin" },
+        { text: "Generated files", link: "/reference/generated-files" },
+      ],
+    },
   ],
   mcp: {
     enabled: true,
     sources: [McpSource.github({ repo: "thelastofinusa/keltra-monorepo" })],
+  },
+  ogImageUrl: (path, { baseUrl }) => {
+    if (path === "/") {
+      const homeOgDescription =
+        "Typed asset paths for modern frontend frameworks.";
+      const homeOgTitle = "Auto-Complete\nfor your Web Assets.";
+
+      return `${baseUrl ?? ""}/api/og?logo=%logo&title=${encodeURIComponent(homeOgTitle)}&description=${encodeURIComponent(homeOgDescription)}`;
+    }
+
+    return `${baseUrl ?? ""}/api/og?logo=%logo&title=%title&description=%description`;
   },
   twoslash: {
     transformers: [
@@ -79,15 +113,22 @@ export default defineConfig({
       link: "/introduction/getting-started",
       match: (path) =>
         Boolean(
-          path?.startsWith("/introduction") ||
-            path?.startsWith("/writing") ||
-            path?.startsWith("/features") ||
-            path?.startsWith("/reference"),
+          path?.startsWith("/introduction") || path?.startsWith("/guides"),
         ),
     },
     {
-      text: "Contributing",
-      link: "https://github.com/thelastofinusa/keltra-monorepo/blob/main/.github/CONTRIBUTING.md",
+      text: "Reference",
+      link: "/reference/config",
+      match: (path) => Boolean(path?.startsWith("/reference")),
+    },
+    {
+      text: "v0.1.0",
+      items: [
+        {
+          text: "Contributing",
+          link: "https://github.com/thelastofinusa/keltra-monorepo/blob/main/CONTRIBUTING.md",
+        },
+      ],
     },
   ],
 });

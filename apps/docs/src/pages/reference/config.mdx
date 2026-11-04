@@ -1,0 +1,72 @@
+# Configuration [Every option in keltra.config.ts]
+
+keltra reads its settings from a config file in your project root. Every option is optional.
+
+```ts [keltra.config.ts]
+import { defineConfig } from "keltra";
+
+export default defineConfig({
+  dirs: ["public"],
+  extensions: ["png", "jpg", "svg"],
+  ignore: ["**/drafts/**"],
+  outDir: ".keltra",
+});
+```
+
+## Config file
+
+keltra looks for the first of these files in your project root:
+
+1. `keltra.config.ts`
+2. `keltra.config.mts`
+3. `keltra.config.js`
+4. `keltra.config.mjs`
+
+TypeScript configs work without any extra setup. If no file exists, the defaults apply.
+
+:::info
+Options passed to the Vite plugin are merged over the config file, and the plugin's values win. The CLI only reads the file.
+:::
+
+## Options
+
+### `dirs`
+
+- **Type:** `Array<string | { dir: string; prefix?: string }>`
+- **Default:** `["public"]`
+
+The folders to scan, relative to the project root. A file's typed path is its location inside the folder, with a leading slash. With the default, `public/images/hero.png` becomes `"/images/hero.png"`.
+
+Use the object form to add a URL prefix:
+
+```ts [keltra.config.ts]
+export default defineConfig({
+  dirs: [
+    "public",
+    { dir: "src/assets", prefix: "/assets" },
+  ],
+});
+```
+
+Here `src/assets/bg.webp` becomes `"/assets/bg.webp"`. If two folders produce the same path, the first folder listed wins. Folders that don't exist yet are skipped.
+
+### `extensions`
+
+- **Type:** `string[]`
+- **Default:** `png`, `jpg`, `jpeg`, `gif`, `webp`, `avif`, `svg`, `ico`, `mp4`, `webm`, `mp3`, `wav`, `ogg`, `woff`, `woff2`, `ttf`, `otf`, `pdf`
+
+The file extensions to include, without the leading dot. Matching ignores case. Setting this replaces the defaults, it doesn't add to them.
+
+### `ignore`
+
+- **Type:** `string[]`
+- **Default:** `["**/node_modules/**"]`
+
+Glob patterns to skip, relative to each scanned folder. Setting this replaces the default.
+
+### `outDir`
+
+- **Type:** `string`
+- **Default:** `".keltra"`
+
+Where the generated files are written, relative to the project root. If you change it, update your `tsconfig.json` `include` and `.gitignore` to match. See [Generated files](/reference/generated-files).

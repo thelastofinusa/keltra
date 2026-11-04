@@ -1,0 +1,49 @@
+# Deployment [Make sure your assets still work in production]
+
+Typed paths are checked at compile time, so by the time you deploy, every path in your code points at a file that exists. This guide covers what happens to those files in production.
+
+## Assets in `public/`
+
+Vite copies everything in `public/` into the build output unchanged. A file at `public/images/hero.svg` ends up at `dist/images/hero.svg`, and `assetPath("/images/hero.svg")` points at it. That works on any host that serves your site from its root: Vercel, Netlify, Cloudflare Pages, or your own domain.
+
+## Serving from a sub-path
+
+Some hosts serve your site from a sub-path. GitHub Pages project sites live at `/your-repo/`. Set Vite's `base` and keltra follows it:
+
+```ts [vite.config.ts]
+import keltra from "keltra/vite";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  base: "/your-repo/",
+  plugins: [keltra()],
+});
+```
+
+With that config, `assetPath("/logo.svg")` returns `/your-repo/logo.svg`. You can also set it from the command line:
+
+```bash
+vite build --base=/your-repo/
+```
+
+| `base` | `assetPath("/logo.svg")` returns |
+| --- | --- |
+| `/` | `/logo.svg` |
+| `/your-repo/` | `/your-repo/logo.svg` |
+| `./` | `./logo.svg` |
+| `https://cdn.example.com/assets/` | `https://cdn.example.com/assets/logo.svg` |
+
+The base is baked into the bundle at build time, so each build targets one location.
+
+## Caching
+
+Files in `public/` are not fingerprinted. If you replace an image and keep its name, visitors may keep seeing the cached version. Rename the file (keltra's types will point out every place that used the old name) or configure shorter cache headers for those paths.
+
+## Case sensitivity
+
+macOS and Windows treat `Hero.png` and `hero.png` as the same file. Most Linux servers don't. keltra's types are case-sensitive, so a path with the wrong case fails the type check on your machine instead of 404ing in production.
+
+## Before you ship
+
+- Run `keltra generate` and your type check in CI, see [Continuous integration](/guides/ci).
+- Build with the same `base` you deploy with.

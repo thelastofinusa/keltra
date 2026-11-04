@@ -1,0 +1,55 @@
+# assetPath [A type-safe asset URL]
+
+`assetPath` takes the path of a file in your asset folders and returns the URL to use in your app.
+
+```ts
+import { assetPath } from "keltra";
+
+const logo = assetPath("/images/logo.svg");
+```
+
+## Signature
+
+```ts
+function assetPath<P extends AssetPath>(path: P): string;
+```
+
+## Typing
+
+`AssetPath` is a union of every asset path in your project, generated into `.keltra/register.d.ts`. That gives you:
+
+- **Autocomplete** for every file in your asset folders.
+- **A compile error** for a path that doesn't exist.
+
+```ts
+assetPath("/images/lgo.svg");
+// Error: Argument of type '"/images/lgo.svg"' is not assignable to
+// parameter of type '"/images/logo.svg" | "/images/hero.png"'.
+```
+
+Until the manifest exists, or when TypeScript doesn't load it, `AssetPath` is plain `string` and anything is accepted. See [Troubleshooting](/guides/troubleshooting).
+
+You can import the type to annotate your own props:
+
+```ts
+import type { AssetPath } from "keltra";
+
+type CardProps = { cover: AssetPath };
+```
+
+## Base path
+
+`assetPath` applies the app's base URL, so it keeps working when the site is served from a sub-path.
+
+| `base` | Result for `/logo.svg` |
+| --- | --- |
+| `/` | `/logo.svg` |
+| `/repo/` | `/repo/logo.svg` |
+| `./` | `./logo.svg` |
+| `https://cdn.example.com/a/` | `https://cdn.example.com/a/logo.svg` |
+
+In Vite the base comes from the `base` option and is inlined at build time. Other frameworks will get the same behavior from their integrations. See [Deployment](/guides/deployment).
+
+## Where to use it
+
+Anywhere you need a string URL: `<img src>`, CSS-in-JS, metadata, Open Graph tags, and so on. If you want an image element with loading defaults, use [`Image`](/reference/image).

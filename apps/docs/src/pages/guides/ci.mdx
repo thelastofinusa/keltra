@@ -1,0 +1,48 @@
+# Continuous integration [Catch broken asset paths before they ship]
+
+The `.keltra/` folder is generated, so it is not committed. On a fresh checkout it doesn't exist, and `assetPath` falls back to accepting any string. To get type errors in CI, generate the manifest before you type-check.
+
+## Generate, then type-check
+
+```json [package.json]
+{
+  "scripts": {
+    "typecheck": "keltra generate && tsc --noEmit"
+  }
+}
+```
+
+`keltra generate` reads `keltra.config.ts`, scans your folders, and writes `.keltra/`. It exits with an error if your config can't be loaded.
+
+:::tip
+`vite build` generates the manifest too, so a build step catches the same problems at build time. The `generate` step matters when you run `tsc` on its own.
+:::
+
+## GitHub Actions
+
+```yaml [.github/workflows/ci.yml]
+name: CI
+on: [push, pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun run build
+```
+
+## Make sure the tsconfig include is right
+
+CI only catches typos if TypeScript loads the generated types. Your `tsconfig.json` must include `.keltra/*.d.ts`:
+
+```json [tsconfig.json]
+{
+  "include": ["src", ".keltra/*.d.ts"]
+}
+```
+
+If paths stay plain strings in CI, see [Troubleshooting](/guides/troubleshooting).

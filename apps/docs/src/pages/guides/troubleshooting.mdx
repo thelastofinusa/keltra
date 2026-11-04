@@ -1,0 +1,40 @@
+# Troubleshooting [Fix the most common problems]
+
+## No autocomplete, and typos aren't caught
+
+Paths are plain strings when TypeScript doesn't load `.keltra/register.d.ts`. Check these in order:
+
+1. **The manifest exists.** Start your dev server or run `npx keltra generate`, then look for `.keltra/register.d.ts`.
+2. **Your tsconfig includes it.** Use `".keltra/*.d.ts"`. The shorter `".keltra"` loads nothing, because TypeScript skips folders that start with a dot.
+
+   ```json [tsconfig.json]
+   {
+     "include": ["src", ".keltra/*.d.ts"]
+   }
+   ```
+
+3. **The editor picked up the change.** Restart the TypeScript server (in VS Code: run "TypeScript: Restart TS Server").
+
+## A file isn't in the autocomplete list
+
+- **Folder:** it must be inside one of your configured `dirs`. The default is `public`.
+- **Extension:** only listed extensions are scanned. See the defaults in [Configuration](/reference/config), and add yours with `extensions`.
+- **Hidden files:** files and folders whose names start with a dot are skipped.
+- **Ignored:** check your `ignore` patterns.
+- **Same path twice:** if two folders produce the same path, the first folder in `dirs` wins.
+
+## "Could not load your keltra config"
+
+`keltra.config.ts` threw while loading. Common causes are a syntax error, or importing `keltra` before it is installed. Run your package manager's install command, then try again. The message includes the underlying error.
+
+## Images 404 on the deployed site
+
+If the site is served from a sub-path, set Vite's `base` to match. See [Deployment](/guides/deployment). The base is applied at build time, so rebuild after changing it.
+
+## `fetchPriority` warning in the console
+
+The `priority` prop on `Image` sets `fetchPriority="high"`, which React 18 doesn't recognize. Upgrade to React 19 or leave `priority` off.
+
+## The manifest keeps showing up in git
+
+Add `.keltra/` to your `.gitignore`. `keltra init` does this for you when a `.gitignore` already exists.

@@ -1,0 +1,70 @@
+# Vite [Use keltra in a Vite project]
+
+keltra works with any Vite project: React, Vue, Svelte, or plain TypeScript. It needs Vite 5 or newer and is tested on Vite 8.
+
+## Set up
+
+```ts [vite.config.ts]
+import react from "@vitejs/plugin-react";
+import keltra from "keltra/vite";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [react(), keltra()],
+});
+```
+
+Put your settings in `keltra.config.ts` rather than passing them to the plugin:
+
+```ts [keltra.config.ts]
+import { defineConfig } from "keltra";
+
+export default defineConfig({
+  dirs: ["public"],
+});
+```
+
+:::tip
+The CLI (`keltra generate`) only reads `keltra.config.ts`. Keeping your settings there means the dev server and CI always agree. Options passed to `keltra()` still work and override the file.
+:::
+
+## What the plugin does
+
+- **On `vite build` and when the dev server starts**, it scans your asset folders and writes the manifest to `.keltra/`.
+- **While the dev server runs**, it watches the folders. Adding, removing, or renaming a file regenerates the manifest, and the terminal shows `[keltra] manifest updated`.
+- **When the server closes**, it stops watching, so the process exits cleanly.
+
+Editing the contents of a file does nothing, since that can't change the types.
+
+## Using the paths
+
+```tsx [src/App.tsx]
+import { assetPath } from "keltra";
+import { Image } from "keltra/image";
+
+export default function App() {
+  return (
+    <>
+      <img src={assetPath("/logo.svg")} alt="Logo" />
+      <Image src="/images/hero.svg" alt="Hero" width={480} height={240} priority />
+    </>
+  );
+}
+```
+
+## Base path
+
+`assetPath` and `Image` read Vite's `base` option, so a site served from `/repo/` gets `/repo/logo.svg` without any extra code. See [Deployment](/guides/deployment).
+
+## Server rendering
+
+The base path also applies when your app is rendered on the server through Vite, so server and client output match.
+
+## Example project
+
+The repository includes a working app in [`examples/vite-react`](https://github.com/thelastofinusa/keltra-monorepo/tree/main/examples/vite-react).
+
+## Related
+
+- [Vite plugin reference](/reference/vite-plugin)
+- [Configuration](/reference/config)

@@ -1,0 +1,59 @@
+# Generated files [What keltra writes to .keltra]
+
+keltra writes three files into the output folder (`.keltra/` by default). They are regenerated automatically. Don't edit them, and don't commit them.
+
+```text
+.keltra/
+├── register.d.ts
+├── manifest.js
+└── manifest.d.ts
+```
+
+## register.d.ts
+
+This file is what makes your paths typed. It adds the list of real paths to keltra's `Register` interface, and `assetPath` and `Image` read it.
+
+```ts [.keltra/register.d.ts]
+declare module "keltra" {
+  interface Register {
+    paths: "/images/hero.svg" | "/logo.svg";
+  }
+}
+
+export {};
+```
+
+With no assets, `paths` is `never`, so every path is an error.
+
+Your `tsconfig.json` must include it:
+
+```json [tsconfig.json]
+{
+  "include": ["src", ".keltra/*.d.ts"]
+}
+```
+
+:::warning
+Use `".keltra/*.d.ts"`. Listing the folder as `".keltra"` loads nothing, because TypeScript skips dot-folders named directly.
+:::
+
+## manifest.js and manifest.d.ts
+
+A runtime list of every path, with matching types.
+
+```js [.keltra/manifest.js]
+export const paths = ["/images/hero.svg", "/logo.svg"];
+```
+
+```ts [.keltra/manifest.d.ts]
+export declare const paths: readonly ["/images/hero.svg", "/logo.svg"];
+export type AssetPath = (typeof paths)[number];
+```
+
+## When files are written
+
+keltra only writes a file when its content changed. That keeps file watchers and hot reload from looping.
+
+## Changing the location
+
+Set [`outDir`](/reference/config#outdir) to write somewhere else. Update your `tsconfig.json` `include` and `.gitignore` to match.

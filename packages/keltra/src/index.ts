@@ -1,3 +1,5 @@
+import { withBase } from "./core/with-base";
+
 export { defineConfig } from "./core/define-config";
 export type { AssetDir, KeltraConfig } from "./core/types";
 
@@ -15,12 +17,23 @@ export type AssetPath = Register extends { paths: infer P extends string }
   : string;
 
 /**
- * Type-safe asset path. Autocompletes from your asset folders and
- * errors at compile time if the file doesn't exist.
+ * The app's base URL. Vite replaces `import.meta.env.BASE_URL` at build time
+ * with the configured `base`, so this also works inside server renders.
  *
- * TODO: apply the framework's base path (Vite `base`, Next `basePath`)
- * once the integrations expose it.
+ * TODO: Next.js `basePath` will be injected by `withKeltra`.
  */
-export function assetPath<P extends AssetPath>(path: P): P {
-  return path;
+function getBase(): string {
+  return (
+    (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ??
+    ""
+  );
+}
+
+/**
+ * Type-safe asset path. Autocompletes from your asset folders and errors at
+ * compile time if the file doesn't exist. The app's base path is applied, so
+ * it keeps working when the site is served from a sub-path.
+ */
+export function assetPath<P extends AssetPath>(path: P): string {
+  return withBase(getBase(), path);
 }

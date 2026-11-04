@@ -1,7 +1,9 @@
 import { assetPath } from "keltra";
+import { Image } from "keltra/image";
 
-// Uncomment this line to see the type error for a path that doesn't exist:
+// Uncomment either line to see the type error for a path that does not exist:
 // assetPath("/images/hreo.svg");
+// <Image src="/images/hreo.svg" alt="" />
 
 export default function App() {
   return (
@@ -14,6 +16,7 @@ export default function App() {
         padding: 48,
       }}
     >
+      {/* assetPath: use it anywhere a string URL is expected */}
       <img
         src={assetPath("/logo.svg")}
         alt="keltra logo"
@@ -21,7 +24,14 @@ export default function App() {
         height={64}
       />
       <h1>keltra + Vite</h1>
-      <img src={assetPath("/images/hero.svg")} alt="Hero" width={480} />
+      {/* Image: same typed paths, with loading defaults built in */}
+      <Image
+        src="/images/hero.svg"
+        alt="Hero"
+        width={480}
+        height={240}
+        priority
+      />
       <p>
         Add or remove a file in <code>public/</code> and the types update.
       </p>

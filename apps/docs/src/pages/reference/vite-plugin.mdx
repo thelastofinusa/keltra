@@ -1,0 +1,46 @@
+# Vite plugin [keltra/vite]
+
+```ts [vite.config.ts]
+import keltra from "keltra/vite";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [keltra()],
+});
+```
+
+## Signature
+
+```ts
+function keltra(options?: KeltraConfig): Plugin;
+```
+
+`options` accepts the same fields as [`keltra.config.ts`](/reference/config). They are merged over the config file, and the plugin's values win.
+
+## Behavior
+
+| Vite hook | What keltra does |
+| --- | --- |
+| `configResolved` | Loads `keltra.config.ts` from the project root and merges your options over it |
+| `buildStart` | Generates the manifest. Runs for `vite build` and when the dev server starts |
+| `configureServer` | Starts watching the asset folders (dev server only) |
+| `buildEnd` | Stops the watcher |
+
+## Logging
+
+The plugin logs through Vite's logger, only when something changed:
+
+```text
+[keltra] generated 12 asset paths
+[keltra] manifest updated (13 asset paths)
+```
+
+## Requirements
+
+- Vite 5 or newer. Tested on Vite 8.
+- `vite` is an optional peer dependency of `keltra`, so you only need it when you use this plugin.
+
+## Related
+
+- [Vite guide](/guides/vite)
+- [Configuration](/reference/config)

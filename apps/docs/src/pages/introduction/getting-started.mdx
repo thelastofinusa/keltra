@@ -1,18 +1,15 @@
-# Getting Started \[Install Keltra and use typed asset paths]
+# Getting Started [Set keltra up in an existing project]
 
-## Overview
+:::info
+keltra supports Vite today. Next.js is in progress, see [Framework support](/guides/frameworks).
+:::
 
-This guide takes you from zero to typed asset paths. You'll install keltra, wire it into your framework, and use either the `assetPath()` helper or the `<Image>` component — both read the same generated manifest.
+## Quick start
 
-If you haven't already, read [What is Keltra?](/introduction/what-is-keltra) first.
-
-## Install
-
-### With the CLI (recommended)
-
-The CLI detects your framework, adds the config, installs the package, and generates the first manifest.
+Run the setup command from your project root:
 
 :::code-group
+
 ```bash [npm]
 npx keltra init
 ```
@@ -28,17 +25,21 @@ yarn dlx keltra init
 ```bash [bun]
 bunx keltra init
 ```
+
 :::
 
-To set up a project in another folder, pass it as an argument:
+The CLI detects your framework, asks where your assets live, installs keltra if needed, writes a `keltra.config.ts`, adds `.keltra/` to your `.gitignore`, and generates the first manifest. Add `-y` to skip the questions and accept the detected defaults. See the [CLI reference](/reference/cli) for every option.
 
-```bash
-npx keltra init ./my-app
-```
+## Manual setup
 
-### Manually
+Prefer to do it yourself? These steps match what `keltra init` does.
+
+::::steps
+
+### Install the package
 
 :::code-group
+
 ```bash [npm]
 npm install keltra
 ```
@@ -54,11 +55,12 @@ yarn add keltra
 ```bash [bun]
 bun add keltra
 ```
+
 :::
 
-## Configure
+### Create a config file
 
-Create a `keltra.config.ts` at the root of your project:
+Tell keltra which folders hold your assets. Files in `public/` are served as-is by Vite, so that is the default.
 
 ```ts [keltra.config.ts]
 import { defineConfig } from "keltra";
@@ -68,13 +70,9 @@ export default defineConfig({
 });
 ```
 
-`dirs` lists the folders keltra should scan. The default is `public/`, which is correct for most Vite, Next.js, Astro, SvelteKit and Nuxt projects
+See [Configuration](/reference/config) for all options.
 
-## Add the integration
-
-The integration runs keltra's scan when your dev server starts, watches for changes while it runs, and generates the manifest during production builds.
-
-### Vite
+### Add the Vite plugin
 
 ```ts [vite.config.ts]
 import { defineConfig } from "vite";
@@ -85,19 +83,7 @@ export default defineConfig({
 });
 ```
 
-### Next.js
-
-```ts [next.config.ts]
-import { withKeltra } from "keltra/next";
-
-export default withKeltra({
-  // your existing Next.js config
-});
-```
-
-## Include the generated types
-
-keltra writes its manifest into `.keltra/`. Add it to your `tsconfig.json` so TypeScript picks up the generated types:
+### Include the generated types in tsconfig
 
 ```json [tsconfig.json]
 {
@@ -105,56 +91,48 @@ keltra writes its manifest into `.keltra/`. Add it to your `tsconfig.json` so Ty
 }
 ```
 
-Most setups (including Vite and Next) need this. If your `tsconfig` already includes `.keltra` through a broader glob like `"**/*"`, you can skip this step.
+:::warning
+Use `".keltra/*.d.ts"`, not just `".keltra"`. TypeScript skips folders that start with a dot when you list them by name, so the shorter form silently loads nothing and your paths stay plain strings.
+:::
+
+### Ignore the generated folder
+
+```bash [.gitignore]
+.keltra/
+```
+
+### Start your dev server
+
+keltra generates the manifest when the server starts and keeps it up to date while it runs.
+
+::::
 
 ## Use typed paths
 
-### `assetPath()` — no component required
-
-```ts
+```tsx [src/App.tsx]
 import { assetPath } from "keltra";
-
-const logo = assetPath("/logo.svg"); // autocompletes, returns the URL
-```
-
-Use it anywhere a string path is expected: `<img src>`, CSS-in-JS, metadata, Open Graph tags, and so on.
-
-### `<Image>` component
-
-```tsx
 import { Image } from "keltra/image";
 
-export function Hero() {
-  // `src` autocompletes from the files in your asset folders
+export default function App() {
   return (
-    <Image src="/images/hero.png" alt="Hero" width={1200} height={600} />
+    <>
+      <img src={assetPath("/logo.svg")} alt="Logo" />
+      <Image src="/images/hero.png" alt="Hero" width={1200} height={600} />
+    </>
   );
 }
 ```
 
-On Next.js, import from `keltra/image/next` to get a component that wraps `next/image` with the same typed `src`:
+Both `assetPath` and `Image` autocomplete from the files in your asset folders. A path that doesn't exist fails the type check:
 
-```tsx
-import { Image } from "keltra/image/next";
+```ts
+assetPath("/images/hreo.png");
+// Error: Argument of type '"/images/hreo.png"' is not assignable to
+// parameter of type '"/images/hero.png" | "/logo.svg"'.
 ```
 
-## Verify it works
+## Next steps
 
-1. Start your dev server.
-2. Type `assetPath("/` and check that your asset files appear as suggestions.
-3. Try a path that doesn't exist, e.g. `assetPath("/lgo.svg")` — TypeScript should report an error.
-4. Add or delete a file in your asset folder while the dev server is running, and watch the manifest update.
-
-If autocomplete doesn't appear, check that `.keltra/register.d.ts` exists and is included in your `tsconfig.json`.
-
-## Run it in CI
-
-The manifest is regenerated on every production build, so `tsc --noEmit` (or `next build`, `vite build`, etc.) will fail if any code references a missing asset. If you don't use a framework integration, add `keltra generate` before your type-check step:
-
-```json [package.json]
-{
-  "scripts": {
-    "typecheck": "keltra generate && tsc --noEmit"
-  }
-}
-```
+- Learn how the plugin behaves in the [Vite guide](/guides/vite).
+- Run the type check in CI with [Continuous integration](/guides/ci).
+- Deploying under a sub-path? Read [Deployment](/guides/deployment).

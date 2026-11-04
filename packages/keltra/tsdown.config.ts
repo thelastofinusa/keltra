@@ -15,8 +15,8 @@ export default defineConfig({
     // "integrations/sveltekit": "src/integrations/sveltekit.ts",
 
     // Image components
-    // "image/index": "src/image/index.tsx",
-    // "image/next": "src/image/next.tsx",
+    "image/index": "src/image/index.tsx",
+    "image/next": "src/image/next.tsx",
 
     // CLI (src/cli/index.ts must start with #!/usr/bin/env node)
     "cli/index": "src/cli/index.ts",

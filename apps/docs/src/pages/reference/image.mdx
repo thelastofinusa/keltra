@@ -1,0 +1,47 @@
+# Image [An img element with typed paths]
+
+`Image` is a small wrapper around the native `img` element. Its `src` autocompletes from your asset folders, the base path is applied for you, and images load lazily by default.
+
+```tsx
+import { Image } from "keltra/image";
+
+export function Hero() {
+  return <Image src="/images/hero.png" alt="Hero" width={1200} height={600} />;
+}
+```
+
+## Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `src` | `AssetPath` | A file from your asset folders. Required. |
+| `alt` | `string` | Required, like `next/image`. Use `""` for decorative images. |
+| `width` | `number` | Width in pixels. Ignored when `fill` is set. |
+| `height` | `number` | Height in pixels. Ignored when `fill` is set. |
+| `fill` | `boolean` | Stretch the image to fill its parent. The parent needs `position: relative`. |
+| `priority` | `boolean` | Load eagerly with high fetch priority. Use it for the main image above the fold. |
+
+Every other attribute of the native `img` element is passed through, including `className`, `sizes`, `srcSet`, `loading`, and `decoding`.
+
+## Defaults
+
+- `loading` is `"lazy"`, or `"eager"` when `priority` is set. An explicit `loading` always wins.
+- `decoding` is `"async"`.
+- `priority` also sets `fetchPriority="high"`. That hint needs React 19.
+- With `fill`, the image gets `position: absolute`, `inset: 0`, and full width and height. Your own `style` is merged on top.
+
+## What it doesn't do
+
+`Image` doesn't resize, compress, or convert images. It serves the file you point it at. For automatic optimization, use `next/image` through `keltra/image/next`.
+
+## Next.js
+
+```tsx
+import { Image } from "keltra/image/next";
+```
+
+`keltra/image/next` re-exports `next/image` with a typed `src`. Everything else, including optimization, `fill`, `sizes`, and `placeholder`, is Next.js behavior, and Next applies `basePath` itself.
+
+:::warning
+The Next.js wrapper is type-checked but not yet part of a released Next.js integration. See [Framework support](/guides/frameworks).
+:::

@@ -1,26 +1,39 @@
-# What is Keltra \[Typed asset paths for modern frontend frameworks.]
+# What is Keltra [Typed asset paths for modern frontend frameworks.]
 
-## Overview
+keltra scans your asset folders and generates a typed manifest, so every image and file path in your code gets autocomplete and type-checking. Works with Vite today, with Next.js and more on the way, from a single package.
 
-keltra is a small tool that makes the asset paths in your code type-safe. It scans your asset folders and generates a typed manifest, so every image, font, and media file in your project gets autocomplete and type-checking — and a renamed or deleted file fails the build instead of 404ing in production.
+## The problem
 
-You know the bug: someone renames `hero.png` to `hero-2x.png`, the build passes, and the image 404s three days later. keltra makes that impossible.
+You know the bug: someone renames `hero.png` to `hero-2x.png`, the build passes, and the image 404s in production three days later. Paths in code are just strings, and TypeScript can't tell a real file from a typo.
+
+keltra turns your asset folders into types. A path that doesn't exist is a compile error, and the paths that do exist autocomplete as you type.
 
 ## How it works
 
-keltra runs alongside your dev server and your production builds. It scans the folders you point it at, writes a small typed manifest into `.keltra/`, and watches for changes — so types stay in sync as you add, rename, or delete files. No codegen step to remember, no manual refresh.
+1. You add the keltra integration for your framework.
+2. When you start your dev server, keltra scans your asset folders and generates a type manifest (types plus a small runtime module) into `.keltra/`.
+3. While the server runs, keltra watches the folders and regenerates the manifest whenever you add, rename, or delete a file.
+4. Production builds generate the manifest too, so type errors for missing assets show up in CI. You can also run `npx keltra generate` on its own.
 
-Because the manifest is also generated during a production build, missing assets show up in CI, not in production.
+Use whichever API you prefer: a typed [`assetPath()`](/reference/asset-path) helper, or a drop-in [`<Image>`](/reference/image) component. Both read the same generated manifest.
 
-## Why keltra
+## What you get
 
-- **Autocomplete everywhere.** Every asset path in your editor is a suggestion, not a guess.
-- **Type errors for missing files.** Rename an image and TypeScript tells you exactly where it broke.
-- **Framework-native.** Works with Vite, Next.js, and more, from a single package.
-- **Zero runtime overhead.** The generated manifest is just types — it disappears at build time.
+- **Autocomplete** for every file in your asset folders.
+- **Compile-time errors** for paths that don't exist, often with a "did you mean" suggestion.
+- **Base path support**, so images keep working when your site is served from a sub-path.
+- **A CLI** that sets a project up and regenerates the manifest in CI.
 
-## Pick your API
+## Framework support
 
-keltra exposes the same generated types through whichever API fits your codebase: a typed path helper you can pass anywhere a string is expected, or a drop-in `Image` component with a typed `src`. Both read the same manifest, so you can mix them freely.
+| Framework | Status | Entry point |
+| --- | --- | --- |
+| Vite (React, Vue, Svelte, plain TypeScript) | Available | `keltra/vite` |
+| Next.js | In progress | `keltra/next`, `keltra/image/next` |
+| Nuxt, Astro, SvelteKit, webpack | Planned | |
 
-Ready to wire it into your project? Head to [Getting Started](/introduction/getting-started).
+See [Framework support](/guides/frameworks) for details.
+
+## Next steps
+
+Continue with [Getting Started](/introduction/getting-started) to set up your first project.
