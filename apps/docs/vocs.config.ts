@@ -40,17 +40,6 @@ export default defineConfig({
     enabled: true,
     sources: [McpSource.github({ repo: "thelastofinusa/keltra-monorepo" })],
   },
-  ogImageUrl: (path, { baseUrl }) => {
-    if (path === "/") {
-      const homeOgDescription =
-        "Publish docs that stay simple at the source and rich in the browser.";
-      const homeOgTitle = "Minimal Docs\nfor Agents & Humans.";
-
-      return `${baseUrl ?? ""}/api/og?logo=%logo&title=${encodeURIComponent(homeOgTitle)}&description=${encodeURIComponent(homeOgDescription)}`;
-    }
-
-    return `${baseUrl ?? ""}/api/og?logo=%logo&title=%title&description=%description`;
-  },
   twoslash: {
     transformers: [
       Twoslash.experimental_rust({
