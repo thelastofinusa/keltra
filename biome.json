@@ -38,7 +38,8 @@
       "preset": "recommended",
       "nursery": {
         "useTailwindSortedClasses": {
-          "level": "error"
+          "level": "error",
+          "fix": "safe"
         }
       }
     }
