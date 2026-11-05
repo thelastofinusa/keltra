@@ -1,4 +1,3 @@
-import { loadEnv } from "vite";
 import {
   Changelog,
   defineConfig,
@@ -12,33 +11,15 @@ import pkg from "../../packages/keltra/package.json";
 
 const { version } = pkg;
 
-// Load .env files locally without crashing production serverless runtime
-const localEnv =
-  process.env.NODE_ENV !== "production"
-    ? loadEnv(process.env.NODE_ENV ?? "development", "../../", "")
-    : {};
-
-// Helper to look in process.env first (production), then fallback to localEnv (dev)
-const getEnv = (key: string) => process.env[key] || localEnv[key];
-
 export default defineConfig({
   title: "Keltra",
   titleTemplate: "%s – Keltra",
-  // iconUrl: {
-  //   light: '/icon-light.svg',
-  //   dark: '/icon-dark.svg',
-  // },
-  // logoUrl: {
-  //   light: '/logo-light.svg',
-  //   dark: '/logo-dark.svg',
-  // },
   socials: [
     {
       icon: "github",
       link: "https://github.com/thelastofinusa/keltra",
     },
   ],
-  // accentColor: 'light-dark(#0f766e, #5eead4)',
   sidebar: [
     {
       text: "Introduction",
@@ -115,7 +96,8 @@ export default defineConfig({
   feedback: Feedback.from({
     type: "custom",
     async submit(data) {
-      const webhookUrl = getEnv("DISCORD_KELTRA_WEBHOOK_URL");
+      // Directly access process.env in production/serverless
+      const webhookUrl = process.env.DISCORD_KELTRA_WEBHOOK_URL;
 
       if (!webhookUrl) {
         console.error(
@@ -139,7 +121,7 @@ export default defineConfig({
               {
                 title: `📝 Keltra Docs Feedback${category}`,
                 description: data.message || "_No written comment provided._",
-                color: isHelpful ? 3066993 : 15158332, // Green for helpful, Red for not helpful
+                color: isHelpful ? 3066993 : 15158332,
                 fields: [
                   {
                     name: "Rating",
