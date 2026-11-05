@@ -1,10 +1,11 @@
 {
   "$schema": "https://v2-11-8.turborepo.dev/schema.json",
+  "globalEnv": ["DISCORD_KELTRA_WEBHOOK_URL"],
   "tasks": {
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", ".vocs/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
