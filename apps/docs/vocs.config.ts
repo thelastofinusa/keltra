@@ -12,8 +12,7 @@ import pkg from "../../packages/keltra/package.json";
 const { version } = pkg;
 
 export default defineConfig({
-  // Optimized title: 52 characters (Target: 50–60)
-  title: "Keltra - The smart autocomplete for your web assets",
+  title: "Keltra - Auto-complete for your Web Assets",
   titleTemplate: "%s – Keltra",
 
   iconUrl: {
@@ -170,7 +169,7 @@ export default defineConfig({
   }),
 
   description:
-    "Keltra generates a typed manifest from your asset folders for full autocomplete, build-time validation, and zero broken assets references.",
+    "Keltra generates a typed manifest from your asset folders for autocomplete, build-time validation, and zero broken references.",
 
   editLink: {
     link: "https://github.com/thelastofinusa/keltra/edit/main/apps/docs/src/pages/:path",

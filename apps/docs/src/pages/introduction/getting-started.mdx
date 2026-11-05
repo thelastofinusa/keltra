@@ -2,9 +2,9 @@ import { Prompt } from "vocs";
 
 # Getting Started [Set keltra up in an existing project]
 
-:::info
-keltra supports Vite and Next.js today. See [Framework support](/guides/frameworks) for what is coming.
-:::
+## Overview
+
+This guide walks you through integrating Keltra into your existing project. In just a few minutes, you will install the package, configure your asset folders, and enable type-safe path autocomplete for all your web assets.
 
 ## Quick Prompt
 
@@ -40,6 +40,10 @@ bunx keltra init
 :::
 
 The CLI detects your framework, asks where your assets live, installs keltra if needed, writes a `keltra.config.ts`, adds `.keltra/` to your `.gitignore`, and generates the first manifest. Add `-y` to skip the questions and accept the detected defaults. See the [CLI reference](/reference/cli) for every option.
+
+:::info
+keltra supports Vite and Next.js today. See [Framework support](/guides/frameworks) for what is coming.
+:::
 
 ## Manual setup
 
