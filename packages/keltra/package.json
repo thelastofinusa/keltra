@@ -1,6 +1,6 @@
 {
   "name": "keltra",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Typed asset paths for modern frontend frameworks.",
   "keywords": [
     "assets",

@@ -1,3 +1,4 @@
+import { loadEnv } from "vite";
 import {
   Changelog,
   defineConfig,
@@ -7,7 +8,13 @@ import {
   Retriever,
   Twoslash,
 } from "vocs/config";
-import { version } from "../../packages/keltra/package.json";
+import pkg from "../../packages/keltra/package.json";
+
+const { version } = pkg;
+
+// Load environment variables from the monorepo root ('../..').
+// Pass '' as the third argument to load variables without the VITE_ prefix.
+const env = loadEnv(process.env.NODE_ENV ?? "development", "../../", "");
 
 export default defineConfig({
   title: "Keltra",
@@ -69,19 +76,15 @@ export default defineConfig({
   ],
   mcp: {
     enabled: true,
-    sources: [McpSource.github({ repo: "thelastofinusa/keltra" })],
+    sources: [
+      McpSource.github({
+        name: "keltra",
+        repo: "thelastofinusa/keltra",
+        paths: ["packages", "examples"],
+      }),
+    ],
   },
-  ogImageUrl: (path, { baseUrl }) => {
-    if (path === "/") {
-      const homeOgDescription =
-        "Typed asset paths for modern frontend frameworks.";
-      const homeOgTitle = "Auto-Complete\nfor your Web Assets.";
-
-      return `${baseUrl ?? ""}/api/og?logo=%logo&title=${encodeURIComponent(homeOgTitle)}&description=${encodeURIComponent(homeOgDescription)}`;
-    }
-
-    return `${baseUrl ?? ""}/api/og?logo=%logo&title=%title&description=%description`;
-  },
+  ogImageUrl: (path, { baseUrl }) => `${baseUrl ?? ""}/og-image.webp`,
   twoslash: {
     transformers: [
       Twoslash.experimental_rust({
@@ -107,9 +110,65 @@ export default defineConfig({
   feedback: Feedback.from({
     type: "custom",
     async submit(data) {
-      console.log(data);
+      const webhookUrl = env.DISCORD_KELTRA_WEBHOOK_URL;
+
+      if (!webhookUrl) {
+        console.error(
+          "❌ DISCORD_KELTRA_WEBHOOK_URL is not defined in environment variables!",
+        );
+        return;
+      }
+
+      const isHelpful = data.helpful;
+      const category = data.category ? ` [${data.category.toUpperCase()}]` : "";
+      const timestamp = data.timestamp
+        ? new Date(data.timestamp).toISOString()
+        : new Date().toISOString();
+
+      try {
+        const res = await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            embeds: [
+              {
+                title: `📝 Keltra Docs Feedback${category}`,
+                description: data.message || "_No written comment provided._",
+                color: isHelpful ? 3066993 : 15158332, // Green for helpful, Red for not helpful
+                fields: [
+                  {
+                    name: "Rating",
+                    value: isHelpful ? "👍 Helpful" : "👎 Needs Work",
+                    inline: true,
+                  },
+                  {
+                    name: "Page URL",
+                    value: data.pageUrl
+                      ? `[View Page](${data.pageUrl})`
+                      : "N/A",
+                    inline: true,
+                  },
+                ],
+                footer: {
+                  text: "Keltra Documentation Feedback Bot",
+                },
+                timestamp: timestamp,
+              },
+            ],
+          }),
+        });
+
+        if (!res.ok) {
+          console.error(`❌ Webhook error ${res.status}:`, await res.text());
+        } else {
+          console.log("✅ Feedback successfully dispatched to Discord!");
+        }
+      } catch (err) {
+        console.error("❌ Error sending feedback to Discord:", err);
+      }
     },
   }),
+
   description:
     "keltra generates a typed manifest from your asset folders — so imports autocomplete, missing files fail the build, and you never ship a broken image reference again.",
   editLink: {
