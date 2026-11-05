@@ -7,6 +7,7 @@ import {
   Retriever,
   Twoslash,
 } from "vocs/config";
+import { version } from "../../packages/keltra/package.json";
 
 export default defineConfig({
   title: "Keltra",
@@ -24,6 +25,7 @@ export default defineConfig({
       icon: "github",
       link: "https://github.com/thelastofinusa/keltra-monorepo",
     },
+    { icon: "x", link: "https://x.com/thelastofinusa" },
   ],
   // accentColor: 'light-dark(#0f766e, #5eead4)',
   sidebar: [
@@ -116,7 +118,7 @@ export default defineConfig({
   },
   topNav: [
     {
-      text: "Guides",
+      text: "Guides & API",
       link: "/introduction/getting-started",
       match: (path) =>
         Boolean(
@@ -124,13 +126,17 @@ export default defineConfig({
         ),
     },
     {
-      text: "Reference",
-      link: "/reference/config",
-      match: (path) => Boolean(path?.startsWith("/reference")),
-    },
-    {
-      text: "Contributing",
-      link: "https://github.com/thelastofinusa/keltra-monorepo/blob/main/CONTRIBUTING.md",
+      text: `v${version}`,
+      items: [
+        {
+          text: "Changelog",
+          link: "/changelog",
+        },
+        {
+          text: "Contributing",
+          link: "https://github.com/thelastofinusa/keltra-monorepo/blob/main/CONTRIBUTING.md",
+        },
+      ],
     },
   ],
 });
