@@ -1,9 +1,9 @@
 import { assetPath } from "keltra";
-import { Image } from "keltra/image";
+import { Img } from "keltra/image";
 
 // Uncomment either line to see the type error for a path that does not exist:
 // assetPath("/images/hreo.svg");
-// <Image src="/images/hreo.svg" alt="" />
+// <Img src="/images/hreo.svg" alt="" />
 
 export default function App() {
   return (
@@ -25,7 +25,7 @@ export default function App() {
       />
       <h1>keltra + Vite</h1>
       {/* Image: same typed paths, with loading defaults built in */}
-      <Image
+      <Img
         src="/images/hero.svg"
         alt="Hero"
         width={480}

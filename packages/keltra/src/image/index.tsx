@@ -1,4 +1,4 @@
-import type { ImgHTMLAttributes } from "react";
+import type { ImgHTMLAttributes, ReactElement } from "react";
 // Import from the root entry (not core) so the types stay tied to the
 // `Register` interface that `.keltra/register.d.ts` augments.
 import { type AssetPath, assetPath } from "../index";
@@ -41,7 +41,7 @@ export function Img({
   decoding,
   style,
   ...rest
-}: ImgProps) {
+}: ImgProps): ReactElement {
   return (
     <img
       {...rest}

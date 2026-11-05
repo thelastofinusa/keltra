@@ -1,9 +1,9 @@
 import { assetPath } from "keltra";
-import { Image } from "keltra/image/next";
+import { Img } from "keltra/image/next";
 
 // Uncomment either line to see the type error for a path that does not exist:
 // assetPath("/images/hreo.png");
-// <Image src="/images/hreo.png" alt="" width={1} height={1} />
+// <Img src="/images/hreo.png" alt="" width={1} height={1} />
 
 export default function Page() {
   return (
@@ -25,7 +25,7 @@ export default function Page() {
       />
       <h1>keltra + Next.js</h1>
       {/* Image: next/image with a typed src (Next applies basePath itself) */}
-      <Image
+      <Img
         src="/images/hero.svg"
         alt="Hero"
         width={640}

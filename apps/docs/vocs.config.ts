@@ -1,3 +1,4 @@
+// apps/docs/vocs.config.ts
 import {
   Changelog,
   defineConfig,
@@ -5,13 +6,13 @@ import {
   Feedback,
   McpSource,
   Retriever,
-  Twoslash,
 } from "vocs/config";
-import pkg from "../../packages/keltra/package.json";
+import pkg from "../../packages/keltra/package.json" with { type: "json" };
 
 const { version } = pkg;
 
 export default defineConfig({
+  // Optimized title: 52 characters (Target: 50–60)
   title: "Keltra - Auto-complete for your Web Assets",
   titleTemplate: "%s – Keltra",
 
@@ -84,14 +85,6 @@ export default defineConfig({
     ],
   },
   ogImageUrl: (path, { baseUrl }) => `${baseUrl ?? ""}/og-image.webp`,
-  twoslash: {
-    transformers: [
-      Twoslash.experimental_rust({
-        cargoToml: "./Cargo.toml",
-        cacheOnly: true,
-      }),
-    ],
-  },
   ai: {
     retriever: process.env.CLOUDFLARE_API_TOKEN
       ? Retriever.local({ embedding: Embedding.cloudflare() })

@@ -1,5 +1,5 @@
 import NextImage, { type ImageProps as NextImageProps } from "next/image";
-import { createElement } from "react";
+import { createElement, type ReactElement } from "react";
 import type { AssetPath } from "../index";
 
 export type ImgProps = Omit<NextImageProps, "src"> & {
@@ -12,6 +12,6 @@ export type ImgProps = Omit<NextImageProps, "src"> & {
  * `priority`, `sizes`, `placeholder`...) is Next.js behaviour. Next applies
  * `basePath` itself, so no base handling is needed here.
  */
-export function Img(props: ImgProps) {
+export function Img(props: ImgProps): ReactElement {
   return createElement(NextImage, props);
 }

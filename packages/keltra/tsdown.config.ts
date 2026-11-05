@@ -36,5 +36,7 @@ export default defineConfig({
 
   // dependencies and peerDependencies are external by default.
   // These make sure React's runtime and Next's subpaths are never bundled.
-  external: ["react", "react/jsx-runtime", /^next(\/|$)/],
+  deps: {
+    neverBundle: ["react", "react/jsx-runtime", /^next(\/|$)/],
+  },
 });

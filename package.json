@@ -22,7 +22,7 @@
     "cli": "bun run packages/keltra/src/cli/index.ts",
     "clean": "turbo run clean && rm -rf .turbo node_modules",
     "changeset": "changeset",
-    "version-packages": "changeset version",
+    "version": "changeset version",
     "release": "bun run build && changeset publish"
   },
   "devDependencies": {
