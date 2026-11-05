@@ -23,9 +23,8 @@ export default defineConfig({
   socials: [
     {
       icon: "github",
-      link: "https://github.com/thelastofinusa/keltra-monorepo",
+      link: "https://github.com/thelastofinusa/keltra",
     },
-    { icon: "x", link: "https://x.com/thelastofinusa" },
   ],
   // accentColor: 'light-dark(#0f766e, #5eead4)',
   sidebar: [
@@ -70,7 +69,7 @@ export default defineConfig({
   ],
   mcp: {
     enabled: true,
-    sources: [McpSource.github({ repo: "thelastofinusa/keltra-monorepo" })],
+    sources: [McpSource.github({ repo: "thelastofinusa/keltra" })],
   },
   ogImageUrl: (path, { baseUrl }) => {
     if (path === "/") {
@@ -103,7 +102,7 @@ export default defineConfig({
         ? `https://${process.env.VERCEL_URL}`
         : "https://usekeltra.vercel.app",
   cacheDir: ".vocs/cache",
-  changelog: Changelog.github({ repo: "thelastofinusa/keltra-monorepo" }),
+  changelog: Changelog.github({ repo: "thelastofinusa/keltra" }),
   checkDeadlinks: true,
   feedback: Feedback.from({
     type: "custom",
@@ -114,7 +113,7 @@ export default defineConfig({
   description:
     "keltra generates a typed manifest from your asset folders — so imports autocomplete, missing files fail the build, and you never ship a broken image reference again.",
   editLink: {
-    link: "https://github.com/thelastofinusa/keltra-monorepo/edit/main/apps/docs/src/pages/:path",
+    link: "https://github.com/thelastofinusa/keltra/edit/main/apps/docs/src/pages/:path",
   },
   topNav: [
     {
@@ -134,7 +133,7 @@ export default defineConfig({
         },
         {
           text: "Contributing",
-          link: "https://github.com/thelastofinusa/keltra-monorepo/blob/main/CONTRIBUTING.md",
+          link: "https://github.com/thelastofinusa/keltra/blob/main/CONTRIBUTING.md",
         },
       ],
     },
