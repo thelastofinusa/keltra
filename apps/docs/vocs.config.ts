@@ -13,8 +13,20 @@ const { version } = pkg;
 
 export default defineConfig({
   // Optimized title: 52 characters (Target: 50–60)
-  title: "Keltra",
+  title: "Keltra - The smart autocomplete for your web assets",
   titleTemplate: "%s – Keltra",
+
+  iconUrl: {
+    light: "/icon-light.svg",
+    dark: "/icon-dark.svg",
+  },
+
+  logoUrl: {
+    light: "/logo-tight-light.svg",
+    dark: "/logo-tight-dark.svg",
+  },
+
+  // accentColor: "light-dark(#2563eb, #60a5fa)",
 
   socials: [
     {

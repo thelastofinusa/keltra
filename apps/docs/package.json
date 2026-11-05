@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vocs dev",
     "build": "vocs build",
-    "preview": "vocs preview"
+    "preview": "vocs preview",
+    "clean": "rm -rf .turbo dist node_modules"
   },
   "dependencies": {
     "@fontsource/bricolage-grotesque": "^5.3.0",

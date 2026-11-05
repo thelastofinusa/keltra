@@ -80,7 +80,7 @@ export function Landing(props: Landing.Props) {
                 <img
                   src={logoUrl}
                   alt={config.title}
-                  className="vocs:h-6 vocs:w-auto"
+                  className="vocs:h-4 vocs:w-auto"
                 />
               )}
               {logoUrl && typeof logoUrl !== "string" && (
@@ -88,12 +88,12 @@ export function Landing(props: Landing.Props) {
                   <img
                     src={logoUrl.light}
                     alt={config.title}
-                    className="vocs:h-6 vocs:w-auto vocs:dark:hidden"
+                    className="vocs:h-4 vocs:w-auto vocs:dark:hidden"
                   />
                   <img
                     src={logoUrl.dark}
                     alt={config.title}
-                    className="vocs:hidden vocs:h-6 vocs:w-auto vocs:dark:block"
+                    className="vocs:hidden vocs:h-4 vocs:w-auto vocs:dark:block"
                   />
                 </>
               )}
