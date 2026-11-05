@@ -187,8 +187,8 @@ export default defineConfig({
       text: `v${version}`,
       items: [
         {
-          text: "Changelog",
-          link: "/changelog",
+          text: "NPM",
+          link: "https://www.npmjs.com/package/keltra",
         },
         {
           text: "Contributing",
