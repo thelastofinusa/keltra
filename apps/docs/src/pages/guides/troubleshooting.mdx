@@ -33,7 +33,11 @@ If the site is served from a sub-path, set Vite's `base` to match. See [Deployme
 
 ## `fetchPriority` warning in the console
 
-The `priority` prop on `Image` sets `fetchPriority="high"`, which React 18 doesn't recognize. Upgrade to React 19 or leave `priority` off.
+The `priority` prop on `Img` sets `fetchPriority="high"`, which React 18 doesn't recognize. Upgrade to React 19 or leave `priority` off.
+
+## Next.js can't resolve keltra in a monorepo
+
+Turbopack only reads files inside its project root. If your app imports `keltra` through a workspace link and the build says it can't resolve `keltra` or `keltra/image/next`, make sure your repository has a lockfile at its root, which is how Next.js finds the workspace root. You can also set `turbopack.root` in `next.config.ts` to the repository root.
 
 ## The manifest keeps showing up in git
 

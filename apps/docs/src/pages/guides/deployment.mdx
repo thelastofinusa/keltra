@@ -35,6 +35,20 @@ vite build --base=/your-repo/
 
 The base is baked into the bundle at build time, so each build targets one location.
 
+## Next.js
+
+In Next.js, set `basePath` and keltra follows it:
+
+```ts [next.config.ts]
+import { withKeltra } from "keltra/next";
+
+export default withKeltra({
+  basePath: "/docs",
+});
+```
+
+`assetPath("/logo.svg")` returns `/docs/logo.svg`. `Img` from `keltra/image/next` uses `next/image`, which applies `basePath` on its own. Next.js serves `public/` files under the base path, so those URLs resolve. As with Vite, the value is fixed at build time, so rebuild after you change `basePath`.
+
 ## Caching
 
 Files in `public/` are not fingerprinted. If you replace an image and keep its name, visitors may keep seeing the cached version. Rename the file (keltra's types will point out every place that used the old name) or configure shorter cache headers for those paths.

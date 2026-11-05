@@ -15,7 +15,7 @@ The `.keltra/` folder is generated, so it is not committed. On a fresh checkout 
 `keltra generate` reads `keltra.config.ts`, scans your folders, and writes `.keltra/`. It exits with an error if your config can't be loaded.
 
 :::tip
-`vite build` generates the manifest too, so a build step catches the same problems at build time. The `generate` step matters when you run `tsc` on its own.
+`vite build` and `next build` generate the manifest too, and `next build` type-checks your project, so a wrong path fails the build. The `generate` step matters when you run `tsc` on its own.
 :::
 
 ## GitHub Actions

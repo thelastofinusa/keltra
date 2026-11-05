@@ -17,16 +17,23 @@ export type AssetPath = Register extends { paths: infer P extends string }
   : string;
 
 /**
- * The app's base URL. Vite replaces `import.meta.env.BASE_URL` at build time
- * with the configured `base`, so this also works inside server renders.
+ * The app's base URL.
  *
- * TODO: Next.js `basePath` will be injected by `withKeltra`.
+ * - Vite replaces `import.meta.env.BASE_URL` at build time with its `base`.
+ * - Next.js: `withKeltra` copies `basePath` into `NEXT_PUBLIC_KELTRA_BASE`,
+ *   which Next inlines at build time.
  */
 function getBase(): string {
-  return (
-    (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ??
-    ""
-  );
+  const viteBase = (import.meta as unknown as { env?: { BASE_URL?: string } })
+    .env?.BASE_URL;
+  if (viteBase) return viteBase;
+
+  try {
+    return process.env.NEXT_PUBLIC_KELTRA_BASE ?? "";
+  } catch {
+    // No `process` in the browser outside Next.js.
+    return "";
+  }
 }
 
 /**

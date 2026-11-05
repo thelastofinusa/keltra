@@ -1,6 +1,6 @@
 {
   "name": "keltra",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "description": "Typed asset paths for modern frontend frameworks.",
   "keywords": [
     "assets",
@@ -23,6 +23,12 @@
   "bin": {
     "keltra": "./dist/cli/index.mjs"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thelastofinusa/keltra-monorepo.git",
+    "directory": "packages/keltra"
+  },
+  "homepage": "https://usekeltra.vercel.app",
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",

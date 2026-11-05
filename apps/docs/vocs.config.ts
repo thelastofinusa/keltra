@@ -39,7 +39,13 @@ export default defineConfig({
       text: "Guides",
       collapsed: false,
       items: [
-        { text: "Vite", link: "/guides/vite" },
+        {
+          text: "Frameworks",
+          items: [
+            { text: "Vite", link: "/guides/vite" },
+            { text: "Next.js", link: "/guides/nextjs" },
+          ],
+        },
         { text: "Framework support", link: "/guides/frameworks" },
         { text: "Deployment", link: "/guides/deployment" },
         { text: "Continuous integration", link: "/guides/ci" },
@@ -55,6 +61,7 @@ export default defineConfig({
         { text: "Image", link: "/reference/image" },
         { text: "CLI", link: "/reference/cli" },
         { text: "Vite plugin", link: "/reference/vite-plugin" },
+        { text: "Next.js plugin", link: "/reference/next-plugin" },
         { text: "Generated files", link: "/reference/generated-files" },
       ],
     },
@@ -122,13 +129,8 @@ export default defineConfig({
       match: (path) => Boolean(path?.startsWith("/reference")),
     },
     {
-      text: "v0.1.0",
-      items: [
-        {
-          text: "Contributing",
-          link: "https://github.com/thelastofinusa/keltra-monorepo/blob/main/CONTRIBUTING.md",
-        },
-      ],
+      text: "Contributing",
+      link: "https://github.com/thelastofinusa/keltra-monorepo/blob/main/CONTRIBUTING.md",
     },
   ],
 });

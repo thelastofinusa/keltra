@@ -3,15 +3,17 @@
 | Framework | Status | How you use it |
 | --- | --- | --- |
 | Vite (React, Vue, Svelte, plain TypeScript) | Available | `keltra/vite` plugin |
-| Next.js | In progress | `withKeltra` in `next.config`, `keltra/image/next` |
+| Next.js | Available | `withKeltra` from `keltra/next`, `keltra/image/next` |
 | Nuxt | Planned | `keltra/nuxt` |
 | Astro | Planned | `keltra/astro` |
 | SvelteKit | Planned | `keltra/sveltekit` |
 | webpack | Planned | `keltra/webpack` |
 
 :::warning
-Only the Vite integration is released. The entry points marked in progress or planned are the intended names and may change before they ship.
+Only the Vite and Next.js integrations are released. The entry points marked as planned are the intended names and may change before they ship.
 :::
+
+See the [Vite guide](/guides/vite) and the [Next.js guide](/guides/nextjs) for setup.
 
 ## Any framework, today
 
@@ -24,19 +26,5 @@ npx keltra generate
 Add `.keltra/*.d.ts` to your `tsconfig.json` and `assetPath` is typed. Run the command again after adding or removing assets, or use `npx keltra generate --watch` while you work.
 
 :::info
-`assetPath` applies the base path automatically only in Vite. In other setups it returns the path unchanged, so prefix it yourself if you serve from a sub-path.
+`assetPath` applies the base path automatically in Vite and Next.js. In other setups it returns the path unchanged, so prefix it yourself if you serve from a sub-path.
 :::
-
-## Next.js
-
-Next.js support is in progress. The typed wrapper around `next/image` already exists as `keltra/image/next` and is type-checked, but the `withKeltra` integration that generates the manifest automatically is not released yet. Until then, run `keltra generate` before `next dev` and `next build`.
-
-```tsx [app/page.tsx]
-import { Image } from "keltra/image/next";
-
-export default function Page() {
-  return <Image src="/images/hero.png" alt="Hero" width={1200} height={600} />;
-}
-```
-
-Next.js applies `basePath` to `next/image` itself, so the wrapper adds nothing on top.

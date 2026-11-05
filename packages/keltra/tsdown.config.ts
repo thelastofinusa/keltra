@@ -8,7 +8,7 @@ export default defineConfig({
 
     // Framework integrations (thin wrappers over core)
     "integrations/vite": "src/integrations/vite.ts",
-    // "integrations/next": "src/integrations/next.ts",
+    "integrations/next": "src/integrations/next.ts",
     // "integrations/webpack": "src/integrations/webpack.ts",
     // "integrations/nuxt": "src/integrations/nuxt.ts",
     // "integrations/astro": "src/integrations/astro.ts",

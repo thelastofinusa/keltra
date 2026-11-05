@@ -1,0 +1,101 @@
+# Next.js [Use keltra in a Next.js app]
+
+keltra works with the App Router and the Pages Router. It needs Next.js 14 or newer and is tested on Next.js 16 with both Turbopack and webpack.
+
+## Set up
+
+Wrap your Next.js config with `withKeltra`:
+
+```ts [next.config.ts]
+import { withKeltra } from "keltra/next";
+
+export default withKeltra({
+  // your Next.js config
+});
+```
+
+Tell keltra where your assets live. Files in `public/` are served as-is by Next.js, so that is the default:
+
+```ts [keltra.config.ts]
+import { defineConfig } from "keltra";
+
+export default defineConfig({
+  dirs: ["public"],
+});
+```
+
+Then include the generated types in your `tsconfig.json`:
+
+```json [tsconfig.json]
+{
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".keltra/*.d.ts"]
+}
+```
+
+:::warning
+Next.js's default `include` list doesn't mention `.keltra`, so add `".keltra/*.d.ts"` yourself. Without it, paths stay plain strings. Use that exact pattern, not just `".keltra"`.
+:::
+
+`npx keltra init` does the first two steps for you and prints the third. See the [CLI reference](/reference/cli).
+
+## What `withKeltra` does
+
+| Command | What happens |
+| --- | --- |
+| `next dev` | Generates the manifest, then watches your asset folders and regenerates it when files are added, removed, or renamed |
+| `next build` | Generates the manifest. `next build` type-checks your project, so a path that doesn't exist fails the build |
+| `next start` | Nothing to generate, the build is already done |
+
+It also copies your `basePath` into the build, so `assetPath` can follow it.
+
+## Using the paths
+
+```tsx [app/page.tsx]
+import { assetPath } from "keltra";
+import { Img } from "keltra/image/next";
+
+export default function Page() {
+  return (
+    <>
+      <img src={assetPath("/logo.svg")} alt="Logo" width={64} height={64} />
+      <Img src="/images/hero.png" alt="Hero" width={1200} height={600} priority />
+    </>
+  );
+}
+```
+
+`assetPath` works in server and client components, and gives the same result on both, so there are no hydration mismatches.
+
+`Img` from `keltra/image/next` is `next/image` with a typed `src`. Everything else, including optimization, `fill`, `sizes`, and `placeholder`, is regular Next.js behavior. See the [Image reference](/reference/image).
+
+## Base path
+
+Set `basePath` as usual and keltra follows it:
+
+```ts [next.config.ts]
+export default withKeltra({
+  basePath: "/docs",
+});
+```
+
+| What you write | What you get |
+| --- | --- |
+| `assetPath("/logo.svg")` | `/docs/logo.svg` |
+| `Img` with `src="/images/hero.png"` | Handled by `next/image`, which applies `basePath` itself |
+
+Next.js serves `public/` files under the base path, so those URLs resolve. See [Deployment](/guides/deployment).
+
+## Limits
+
+- `assetPrefix` is not applied to `assetPath` yet. Only `basePath` is.
+- Only folders served as-is, like `public/`, are supported. Files you `import` get hashed names, so typed `/path` strings wouldn't match them.
+
+## Example project
+
+The repository includes a working app in [`examples/nextjs`](https://github.com/thelastofinusa/keltra-monorepo/tree/main/examples/nextjs). Run it under a sub-path with `BASE_PATH=/docs`.
+
+## Related
+
+- [Next.js plugin reference](/reference/next-plugin)
+- [Configuration](/reference/config)
+- [Troubleshooting](/guides/troubleshooting)

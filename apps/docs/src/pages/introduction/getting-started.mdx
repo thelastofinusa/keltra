@@ -1,7 +1,7 @@
 # Getting Started [Set keltra up in an existing project]
 
 :::info
-keltra supports Vite today. Next.js is in progress, see [Framework support](/guides/frameworks).
+keltra supports Vite and Next.js today. See [Framework support](/guides/frameworks) for what is coming.
 :::
 
 ## Quick start
@@ -72,7 +72,9 @@ export default defineConfig({
 
 See [Configuration](/reference/config) for all options.
 
-### Add the Vite plugin
+### Add the integration for your framework
+
+:::code-group
 
 ```ts [vite.config.ts]
 import { defineConfig } from "vite";
@@ -82,6 +84,16 @@ export default defineConfig({
   plugins: [keltra()],
 });
 ```
+
+```ts [next.config.ts]
+import { withKeltra } from "keltra/next";
+
+export default withKeltra({
+  // your Next.js config
+});
+```
+
+:::
 
 ### Include the generated types in tsconfig
 
@@ -111,13 +123,13 @@ keltra generates the manifest when the server starts and keeps it up to date whi
 
 ```tsx [src/App.tsx]
 import { assetPath } from "keltra";
-import { Image } from "keltra/image";
+import { Img } from "keltra/image";
 
 export default function App() {
   return (
     <>
       <img src={assetPath("/logo.svg")} alt="Logo" />
-      <Image src="/images/hero.png" alt="Hero" width={1200} height={600} />
+      <Img src="/images/hero.png" alt="Hero" width={1200} height={600} />
     </>
   );
 }
@@ -133,6 +145,6 @@ assetPath("/images/hreo.png");
 
 ## Next steps
 
-- Learn how the plugin behaves in the [Vite guide](/guides/vite).
+- Learn how the integration behaves in the [Vite guide](/guides/vite) or the [Next.js guide](/guides/nextjs).
 - Run the type check in CI with [Continuous integration](/guides/ci).
 - Deploying under a sub-path? Read [Deployment](/guides/deployment).

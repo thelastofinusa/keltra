@@ -48,7 +48,7 @@ type CardProps = { cover: AssetPath };
 | `./` | `./logo.svg` |
 | `https://cdn.example.com/a/` | `https://cdn.example.com/a/logo.svg` |
 
-In Vite the base comes from the `base` option and is inlined at build time. Other frameworks will get the same behavior from their integrations. See [Deployment](/guides/deployment).
+In Vite the base comes from the `base` option. In Next.js it comes from `basePath`, copied over by `withKeltra`. Both are inlined at build time. Other frameworks will get the same behavior from their integrations. See [Deployment](/guides/deployment).
 
 ## Where to use it
 
