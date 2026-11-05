@@ -49,8 +49,8 @@ export default defineConfig({
         {
           text: "Integrations",
           items: [
-            { text: "Vite Js", link: "/guides/vite" },
-            { text: "NextJs", link: "/guides/nextjs" },
+            { text: "Vite", link: "/guides/vite" },
+            { text: "Next.js", link: "/guides/nextjs" },
           ],
         },
         { text: "Framework support", link: "/guides/frameworks" },
