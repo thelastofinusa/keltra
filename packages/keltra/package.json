@@ -1,7 +1,7 @@
 {
   "name": "keltra",
-  "version": "0.1.10",
-  "description": "Typed asset paths for modern frontend frameworks.",
+  "version": "0.1.11",
+  "description": "The smart autocomplete for your web assets.",
   "keywords": [
     "assets",
     "typescript",

@@ -12,8 +12,10 @@ import pkg from "../../packages/keltra/package.json";
 const { version } = pkg;
 
 export default defineConfig({
+  // Optimized title: 52 characters (Target: 50–60)
   title: "Keltra",
   titleTemplate: "%s – Keltra",
+
   socials: [
     {
       icon: "github",
@@ -96,7 +98,6 @@ export default defineConfig({
   feedback: Feedback.from({
     type: "custom",
     async submit(data) {
-      // Directly access process.env in production/serverless
       const webhookUrl = process.env.DISCORD_KELTRA_WEBHOOK_URL;
 
       if (!webhookUrl) {
@@ -157,7 +158,8 @@ export default defineConfig({
   }),
 
   description:
-    "keltra generates a typed manifest from your asset folders — so imports autocomplete, missing files fail the build, and you never ship a broken image reference again.",
+    "Keltra generates a typed manifest from your asset folders for full autocomplete, build-time validation, and zero broken assets references.",
+
   editLink: {
     link: "https://github.com/thelastofinusa/keltra/edit/main/apps/docs/src/pages/:path",
   },

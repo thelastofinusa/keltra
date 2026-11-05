@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Monorepo for keltra: typed asset paths for modern frontend frameworks.",
+  "description": "Monorepo for keltra: The smart autocomplete for your web assets.",
   "license": "MIT",
   "workspaces": [
     "packages/*",
