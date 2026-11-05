@@ -12,9 +12,14 @@ import pkg from "../../packages/keltra/package.json";
 
 const { version } = pkg;
 
-// Load environment variables from the monorepo root ('../..').
-// Pass '' as the third argument to load variables without the VITE_ prefix.
-const env = loadEnv(process.env.NODE_ENV ?? "development", "../../", "");
+// Load .env files locally without crashing production serverless runtime
+const localEnv =
+  process.env.NODE_ENV !== "production"
+    ? loadEnv(process.env.NODE_ENV ?? "development", "../../", "")
+    : {};
+
+// Helper to look in process.env first (production), then fallback to localEnv (dev)
+const getEnv = (key: string) => process.env[key] || localEnv[key];
 
 export default defineConfig({
   title: "Keltra",
@@ -110,7 +115,7 @@ export default defineConfig({
   feedback: Feedback.from({
     type: "custom",
     async submit(data) {
-      const webhookUrl = env.DISCORD_KELTRA_WEBHOOK_URL;
+      const webhookUrl = getEnv("DISCORD_KELTRA_WEBHOOK_URL");
 
       if (!webhookUrl) {
         console.error(
