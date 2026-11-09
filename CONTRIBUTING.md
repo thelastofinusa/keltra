@@ -26,7 +26,7 @@ bun run build   # so the examples resolve keltra from dist/
 | ---------------------------------------- | -------------------------------------------------------------------- |
 | `packages/keltra`                        | The published library: core, CLI, image, integrations                |
 | `apps/docs`                              | The docs site ([usekeltra.vercel.app](https://usekeltra.vercel.app)) |
-| `examples/vite-react`, `examples/nextjs` | Runnable apps that consume the workspace package                     |
+| `examples/vite-app`, `examples/next-app` | Runnable apps that consume the workspace package                     |
 
 Only `packages/keltra` is published. Everything else is private workspace code.
 
@@ -50,7 +50,7 @@ Inside `packages/keltra`, `bun run dev` runs `tsdown --watch`, so `dist/` stays 
 
 1. Edit files under `packages/keltra/src`.
 2. Keep `bun run dev` running in `packages/keltra` so `dist/` rebuilds on save.
-3. Verify the change in an example: `cd examples/vite-react && bun run dev`, or `cd examples/nextjs && bun run dev`.
+3. Verify the change in an example: `cd examples/vite-app && bun run dev`, or `cd examples/next-app && bun run dev`.
 4. Add or update tests in `packages/keltra/test`, then run `bun test` from that folder.
 
 If you touched anything the CLI generates, delete `.keltra/` in the example and start the dev server again to confirm it regenerates cleanly. To exercise the CLI itself against an example, run `bunx keltra <command>` from inside the example folder — it resolves to the built workspace binary.

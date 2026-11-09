@@ -184,6 +184,14 @@ export default defineConfig({
         ),
     },
     {
+      text: "Troubleshooting",
+      link: "/guides/troubleshooting",
+      // match: (path) =>
+      //   Boolean(
+      //     path?.startsWith("/introduction") || path?.startsWith("/guides"),
+      //   ),
+    },
+    {
       text: `v${version}`,
       items: [
         {

@@ -39,6 +39,89 @@ The `priority` prop on `Img` sets `fetchPriority="high"`, which React 18 doesn't
 
 Turbopack only reads files inside its project root. If your app imports `keltra` through a workspace link and the build says it can't resolve `keltra` or `keltra/image/next`, make sure your repository has a lockfile at its root, which is how Next.js finds the workspace root. You can also set `turbopack.root` in `next.config.ts` to the repository root.
 
+## "`NextConfig` is not assignable to `NextConfigInput`" in a monorepo
+
+`withKeltra` accepts a `NextConfig`, but TypeScript complains that the `NextConfig` from one copy of `next` isn't assignable to the `NextConfig` from another:
+
+```
+Argument of type 'NextConfig' is not assignable to parameter of type 'NextConfigInput | undefined'.
+  Type 'import("…/next@16.4.5+7a5db38…/next/dist/server/config-shared").NextConfig' is not assignable to type
+       'import("…/next@16.4.5+cba3cb3…/next/dist/server/config-shared").NextConfig'.
+    Types of property 'webpack' are incompatible.
+      …
+```
+
+This isn't a keltra bug. Your monorepo has two physical copies of the same `next` version installed — typically different peer-dependency hashes in Bun's `.bun` store, or two entries under pnpm's isolated linker. Because the two `NextConfig` declarations live in separate directories, TypeScript treats them as unrelated types and refuses to pass one where the other is expected.
+
+You can fix it at the call site (fastest) or at the install level (removes the duplicate entirely).
+
+::::steps
+### Use `satisfies` instead of a type annotation
+
+Replace the `: NextConfig` annotation with `satisfies NextConfig`. This checks the object against `NextConfig` without widening its inferred type, so the value stays assignable to both copies.
+
+```ts [next.config.ts]
+import { withKeltra } from "keltra/next";
+import type { NextConfig } from "next";
+
+const nextConfig = {
+  /* config options here */
+} satisfies NextConfig;
+
+export default withKeltra(nextConfig);
+```
+
+The same works inside `withKeltra`'s callback form:
+
+```ts [next.config.ts]
+import { withKeltra } from "keltra/next";
+import type { NextConfig } from "next";
+
+export default withKeltra((phase, { defaultConfig }) => ({
+  ...defaultConfig,
+  /* config options here */
+}) satisfies NextConfig);
+```
+
+### Deduplicate `next`
+
+To keep the `: NextConfig` annotation, remove the duplicate copy so there's only one `NextConfig` type in the project:
+
+:::code-group
+```bash [npm]
+npm dedupe
+```
+
+```bash [pnpm]
+pnpm dedupe
+```
+
+```bash [yarn]
+yarn dedupe
+```
+
+```bash [bun]
+bun dedupe
+```
+:::
+
+If the copies survive because the workspaces resolve different peer sets, pin `next` in the **root** `package.json` and reinstall:
+
+```json [package.json]
+{
+  "overrides": {
+    "next": "16.4.5"
+  }
+}
+```
+
+```bash
+rm -rf node_modules && bun install   # or pnpm install / npm install
+```
+
+After that, the original `const nextConfig: NextConfig = { … }` form type-checks again.
+::::
+
 ## The manifest keeps showing up in git
 
 Add `.keltra/` to your `.gitignore`. `keltra init` does this for you when a `.gitignore` already exists.

@@ -8,10 +8,13 @@ Wrap your Next.js config with `withKeltra`:
 
 ```ts [next.config.ts]
 import { withKeltra } from "keltra/next";
+import type { NextConfig } from "next";
 
-export default withKeltra({
-  // your Next.js config
-});
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default withKeltra(nextConfig);
 ```
 
 Tell keltra where your assets live. Files in `public/` are served as-is by Next.js, so that is the default:
@@ -92,7 +95,7 @@ Next.js serves `public/` files under the base path, so those URLs resolve. See [
 
 ## Example project
 
-The repository includes a working app in [`examples/nextjs`](https://github.com/thelastofinusa/keltra/tree/main/examples/nextjs). Run it under a sub-path with `BASE_PATH=/docs`.
+The repository includes a working app in [`examples/next-app`](https://github.com/thelastofinusa/keltra/tree/main/examples/next-app). Run it under a sub-path with `BASE_PATH=/docs`.
 
 ## Related
 

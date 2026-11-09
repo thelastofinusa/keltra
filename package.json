@@ -23,7 +23,8 @@
     "clean": "turbo run clean && rm -rf .turbo node_modules",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "bun run build && changeset publish"
+    "release": "bun run build && changeset publish",
+    "copy:docs-public": "bun run scripts/copy-docs-public.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.3",
