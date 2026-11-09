@@ -4,6 +4,8 @@ keltra works with any Vite project: React, Vue, Svelte, or plain TypeScript. It 
 
 ## Set up
 
+The fastest way is `npx keltra init`: it writes `keltra.config.ts`, adds `".keltra/*.d.ts"` to your `tsconfig.app.json`, and adds `keltra()` to `vite.config.ts` for you. If you prefer to set it up by hand — or init couldn't edit one of the files — do it manually:
+
 ```ts [vite.config.ts]
 import react from "@vitejs/plugin-react";
 import keltra from "keltra/vite";

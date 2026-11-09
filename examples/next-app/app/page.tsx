@@ -32,30 +32,22 @@ export default function Home() {
           </p>
         </div>
 
-        {/* TSCONFIG CRITICAL NOTE */}
+        {/* TSCONFIG SETUP */}
         <div className="space-y-1 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-900 dark:text-amber-200">
           <h3 className="flex items-center gap-2 font-semibold">
-            ⚠️ Important tsconfig.json Setup
+            ⚠️ tsconfig setup
           </h3>
           <p className="text-xs leading-relaxed opacity-90">
-            Next.js's default{" "}
-            <code className="bg-background/50 rounded px-1 py-0.5 font-mono">
-              include
-            </code>{" "}
-            list doesn't mention{" "}
-            <code className="bg-background/50 rounded px-1 py-0.5 font-mono">
-              .keltra
-            </code>
-            , so add{" "}
+            `keltra init` adds this for you. If you set up keltra manually, add
             <code className="bg-background/50 rounded px-1 py-0.5 font-mono">
               ".keltra/*.d.ts"
             </code>{" "}
-            yourself. Without it, paths stay plain strings. Use that exact
-            pattern, not just{" "}
+            to your `tsconfig.json` `include`. Use that exact pattern — not just{" "}
             <code className="bg-background/50 rounded px-1 py-0.5 font-mono">
               ".keltra"
             </code>
-            .
+            — otherwise TypeScript skips the dot-prefixed folder and paths stay
+            plain strings.
           </p>
         </div>
 

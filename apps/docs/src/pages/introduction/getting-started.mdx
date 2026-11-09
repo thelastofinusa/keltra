@@ -39,7 +39,11 @@ bunx keltra init
 
 :::
 
-The CLI detects your framework, asks where your assets live, installs keltra if needed, writes a `keltra.config.ts`, adds `.keltra/` to your `.gitignore`, and generates the first manifest. Add `-y` to skip the questions and accept the detected defaults. See the [CLI reference](/reference/cli) for every option.
+The CLI detects your framework (asking you to confirm it), installs keltra if needed, writes `keltra.config.ts`, adds `.keltra/` to your `.gitignore`, generates the first manifest, and — when it can do so safely — adds `".keltra/*.d.ts"` to your tsconfig and wires up `next.config.ts` or `vite.config.ts`. Add `-y` to skip the questions and accept the detected defaults. See the [CLI reference](/reference/cli) for every option.
+
+:::tip
+Prefer to see exactly what `keltra init` changes? Each edit is listed under *Setup Summary* when the command finishes, and it never overwrites your existing config — it only adds keltra's required lines.
+:::
 
 :::info
 keltra supports Vite and Next.js today. See [Framework support](/guides/frameworks) for what is coming.
@@ -47,7 +51,7 @@ keltra supports Vite and Next.js today. See [Framework support](/guides/framewor
 
 ## Manual setup
 
-Prefer to do it yourself? These steps match what `keltra init` does.
+Prefer to do it yourself? These are the same steps `keltra init` performs, minus the framework picker. `keltra init` also wires your framework config (`next.config.ts` or `vite.config.ts`) for you, and falls back to printing the step if it can't edit the file safely.
 
 ::::steps
 

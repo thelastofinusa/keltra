@@ -1,10 +1,10 @@
 import { assetPath } from "keltra";
 import { Img } from "keltra/image";
-import { ModeToggle } from "./components/mode-toggle"
+import { ModeToggle } from "./components/mode-toggle";
 
 export function App() {
   return (
-   <div className="bg-background text-foreground flex min-h-screen flex-col">
+    <div className="bg-background text-foreground flex min-h-screen flex-col">
       {/* Navbar with Mode Toggle */}
       <header className="border-border bg-card/50 sticky top-0 z-50 border-b backdrop-blur">
         <div className="container mx-auto flex h-16 max-w-4xl items-center justify-between px-6">
@@ -31,30 +31,23 @@ export function App() {
           </p>
         </div>
 
-        {/* TSCONFIG CRITICAL NOTE */}
+        {/* TSCONFIG SETUP */}
         <div className="space-y-1 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-900 dark:text-amber-200">
           <h3 className="flex items-center gap-2 font-semibold">
-            ⚠️ Important tsconfig.app.json Setup
+            ⚠️ tsconfig setup
           </h3>
           <p className="text-xs leading-relaxed opacity-90">
-            Next.js's default{" "}
-            <code className="bg-background/50 rounded px-1 py-0.5 font-mono">
-              include
-            </code>{" "}
-            list doesn't mention{" "}
-            <code className="bg-background/50 rounded px-1 py-0.5 font-mono">
-              .keltra
-            </code>
-            , so add{" "}
+            `keltra init` adds this for you. If you set up keltra manually, add
             <code className="bg-background/50 rounded px-1 py-0.5 font-mono">
               ".keltra/*.d.ts"
             </code>{" "}
-            yourself. Without it, paths stay plain strings. Use that exact
-            pattern, not just{" "}
+            to your `tsconfig.app.json` `include`. Use that exact pattern — not
+            just{" "}
             <code className="bg-background/50 rounded px-1 py-0.5 font-mono">
               ".keltra"
             </code>
-            .
+            — otherwise TypeScript skips the dot-prefixed folder and paths stay
+            plain strings.
           </p>
         </div>
 
@@ -191,7 +184,7 @@ export function App() {
         </section>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

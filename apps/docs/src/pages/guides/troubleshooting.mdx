@@ -15,6 +15,8 @@ Paths are plain strings when TypeScript doesn't load `.keltra/register.d.ts`. Ch
 
 3. **The editor picked up the change.** Restart the TypeScript server (in VS Code: run "TypeScript: Restart TS Server").
 
+4. **`keltra init` couldn't update your tsconfig.** If the file is missing or has an unusual shape, init falls back to printing the manual step. The *Setup Summary* at the end of `keltra init` reports `Could not update — add it manually` in that case — add `".keltra/*.d.ts"` to your `include` yourself.
+
 ## A file isn't in the autocomplete list
 
 - **Folder:** it must be inside one of your configured `dirs`. The default is `public`.

@@ -39,7 +39,7 @@ Then include the generated types in your `tsconfig.json`:
 Next.js's default `include` list doesn't mention `.keltra`, so add `".keltra/*.d.ts"` yourself. Without it, paths stay plain strings. Use that exact pattern, not just `".keltra"`.
 :::
 
-`npx keltra init` does the first two steps for you and prints the third. See the [CLI reference](/reference/cli).
+`npx keltra init` does all of this for you: it writes `keltra.config.ts`, adds `.keltra/` to `.gitignore`, adds `".keltra/*.d.ts"` to your `tsconfig.json`, and wraps your `next.config.ts` default export in `withKeltra`. If your config is in a shape it can't safely edit (for example, it exports a function), it prints the step for you to do manually instead. See the [CLI reference](/reference/cli).
 
 ## What `withKeltra` does
 

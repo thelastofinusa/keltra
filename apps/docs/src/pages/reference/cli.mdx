@@ -32,7 +32,11 @@ It does the following:
 4. Writes `keltra.config.ts`. An existing keltra config is left alone.
 5. Adds `.keltra/` to `.gitignore` when the file exists.
 6. Generates the first manifest, so autocomplete works right away.
-7. Prints the remaining steps for your framework, including adding `".keltra/*.d.ts"` to your `tsconfig.json`.
+7. Adds `".keltra/*.d.ts"` to your `tsconfig.json` (or `tsconfig.app.json` for Vite when it exists).
+8. Adds the integration to `next.config.ts` / `vite.config.ts` (when it can do so safely).
+9. Prints any step it could not apply automatically.
+
+Steps 7 and 8 are skipped when the file is missing, already up to date, or in an unusual shape — for example, `next.config.ts` exporting a function. Anything `init` couldn't apply shows up under "Next Steps" at the end of the command, so you can finish it by hand.
 
 ## generate
 
