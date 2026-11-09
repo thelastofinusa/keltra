@@ -1,7 +1,7 @@
 import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
 import { appendFile, readFile, writeFile } from "node:fs/promises";
-import path from "node:path";
+import path, { relative } from "node:path";
 import { promisify } from "node:util";
 import { confirm, input, select } from "@inquirer/prompts";
 import {
@@ -15,6 +15,14 @@ import {
 import chalk from "chalk";
 import type { Command } from "commander";
 import { createKeltra, type KeltraConfig } from "../../../core";
+import {
+  addKeltraTypesToTsConfig,
+  addNextIntegration,
+  addViteIntegration,
+  type EditStatus,
+  findTsConfigFile,
+  KELTRA_TYPES_GLOB,
+} from "../../../core/edits";
 import { findConfigFile, loadConfig } from "../../../core/load-config";
 import { pkg } from "../../../pkg.config";
 import { createCommandTitle } from "../../core/cli";
@@ -130,18 +138,31 @@ export const initCommand = () => {
       const skipPrompts = Boolean(options.yes);
       const detected = detectFramework(projectPackage);
 
-      // 1. Framework
-      const framework: Framework = skipPrompts
-        ? detected
-        : await select<Framework>({
-            message: "Select your framework:",
-            default: detected,
-            choices: FRAMEWORKS.map((f) => ({
-              name: f.value === detected ? `${f.name} (detected)` : f.name,
-              value: f.value,
-              description: f.description,
-            })),
-          });
+      // 1. Framework — confirm the detected one first, fall back to the list.
+      const chooseFramework = () =>
+        select<Framework>({
+          message: "Select your framework:",
+          default: detected,
+          choices: FRAMEWORKS.map((f) => ({
+            name: f.value === detected ? `${f.name} (detected)` : f.name,
+            value: f.value,
+            description: f.description,
+          })),
+        });
+
+      let framework: Framework;
+      if (skipPrompts) {
+        framework = detected;
+      } else if (detected !== "other") {
+        const detectedInfo = getFramework(detected);
+        const confirmed = await confirm({
+          message: `Detected ${chalk.cyan(detectedInfo.name)}. Is that your framework?`,
+          default: true,
+        });
+        framework = confirmed ? detected : await chooseFramework();
+      } else {
+        framework = await chooseFramework();
+      }
 
       const info = getFramework(framework);
 
@@ -199,35 +220,80 @@ export const initCommand = () => {
       const { assets } = await createKeltra(userConfig, root).generate();
       spinner.succeed(`Found ${plural(assets.length, "asset")}`);
 
+      // 6. Wire up the project automatically
+      spinner.start("Wiring up your project..");
+
+      const tsconfigFile = await findTsConfigFile(root, framework);
+      let tsconfigStatus: EditStatus = "skipped";
+      if (tsconfigFile) {
+        tsconfigStatus = await addKeltraTypesToTsConfig(tsconfigFile);
+      }
+
+      let frameworkConfigStatus: EditStatus = "skipped";
+      if (framework === "next") {
+        frameworkConfigStatus = await addNextIntegration(root);
+      } else if (framework === "vite") {
+        frameworkConfigStatus = await addViteIntegration(root);
+      }
+
+      spinner.succeed("Project wired up");
+
       // Summary
+      const summaryItems: Array<{ title: string; description: string }> = [
+        {
+          title: `Framework: ${chalk.yellow(info.name)}`,
+          description: `Asset folder: ${assetDir}`,
+        },
+        {
+          title: `Config: ${chalk.green(CONFIG_FILE)}`,
+          description:
+            configStatus === "created"
+              ? "Created"
+              : "Kept your existing config",
+        },
+        {
+          title: `Manifest: ${chalk.cyan(".keltra/")}`,
+          description: `${plural(assets.length, "asset")} found${
+            gitignoreUpdated ? " (added to .gitignore)" : ""
+          }`,
+        },
+      ];
+
+      if (tsconfigFile) {
+        summaryItems.push({
+          title: `tsconfig: ${chalk.cyan(relative(root, tsconfigFile))}`,
+          description:
+            tsconfigStatus === "added"
+              ? `Added ${KELTRA_TYPES_GLOB}`
+              : tsconfigStatus === "already"
+                ? `Already includes ${KELTRA_TYPES_GLOB}`
+                : "Could not update — add it manually",
+        });
+      }
+
+      if (info.integration) {
+        summaryItems.push({
+          title: `${info.integration.file}: ${chalk.cyan(relative(root, info.integration.file))}`,
+          description:
+            frameworkConfigStatus === "added"
+              ? "Added keltra integration"
+              : frameworkConfigStatus === "already"
+                ? "Already wired up"
+                : "Could not update — add it manually",
+        });
+      }
+
       showTree({
         headerTitle: "Setup Summary",
-        items: [
-          {
-            title: `Framework: ${chalk.yellow(info.name)}`,
-            description: `Asset folder: ${assetDir}`,
-          },
-          {
-            title: `Config: ${chalk.green(CONFIG_FILE)}`,
-            description:
-              configStatus === "created"
-                ? "Created"
-                : "Kept your existing config",
-          },
-          {
-            title: `Manifest: ${chalk.cyan(".keltra/")}`,
-            description: `${plural(assets.length, "asset")} found${
-              gitignoreUpdated ? " (added to .gitignore)" : ""
-            }`,
-          },
-        ],
+        items: summaryItems,
         color: chalk.cyan,
         margin: { top: true },
       });
 
-      const nextSteps = [];
+      const nextSteps: Array<{ title: string; description: string }> = [];
 
-      if (info.integration) {
+      // Only list the framework integration if auto-edit was skipped.
+      if (info.integration && frameworkConfigStatus === "skipped") {
         const { file, importLine, usage } = info.integration;
         nextSteps.push({
           title: `Add keltra to ${chalk.cyan(file)}`,
@@ -235,10 +301,13 @@ export const initCommand = () => {
         });
       }
 
-      nextSteps.push({
-        title: `Include ${chalk.cyan(".keltra")} in your tsconfig.json`,
-        description: '"include": ["src", ".keltra/*.d.ts"]',
-      });
+      // Only list the tsconfig step if auto-edit was skipped or the file is missing.
+      if (!tsconfigFile || tsconfigStatus === "skipped") {
+        nextSteps.push({
+          title: `Include ${chalk.cyan(".keltra")} in your tsconfig`,
+          description: '"include": ["src", ".keltra/*.d.ts"]',
+        });
+      }
 
       nextSteps.push(
         info.integration
@@ -252,12 +321,14 @@ export const initCommand = () => {
             },
       );
 
-      showTree({
-        headerTitle: "Next Steps",
-        items: nextSteps,
-        color: chalk.yellow,
-        margin: { top: true },
-      });
+      if (nextSteps.length > 0) {
+        showTree({
+          headerTitle: "Next Steps",
+          items: nextSteps,
+          color: chalk.yellow,
+          margin: { top: true },
+        });
+      }
 
       display.outro({
         title: "keltra is ready!",

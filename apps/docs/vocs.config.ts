@@ -7,7 +7,7 @@ import {
   Retriever,
   Twoslash,
 } from "vocs/config";
-import pkg from "../../packages/keltra/package.json";
+import pkg from "../../packages/keltra/package.json" with { type: "json" };
 
 const { version } = pkg;
 
