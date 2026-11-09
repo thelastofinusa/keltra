@@ -1,42 +1,46 @@
 ## Keltra
 
-keltra scans your asset folders and generates a typed manifest, so every image and file path in your code gets autocomplete and type-checking. Works with Vite and Next.js today, with more frameworks on the way, from a single package.
+**Autocomplete for your web assets.** keltra scans your asset folders and generates a typed manifest, so every image and file path in your code gets autocomplete and type-checking — a renamed or missing file becomes a compile error instead of a 404 in production.
 
-### The problem
+```ts
+import { assetPath } from "keltra";
+import { Image } from "keltra/image";
 
-You know the bug: someone renames `hero.png` to `hero-2x.png`, the build passes, and the image 404s in production three days later. Paths in code are just strings, and TypeScript can't tell a real file from a typo.
+<img src={assetPath("/logo.svg")} alt="Logo" />
+<Image src="/images/hero.png" alt="Hero" width={1200} height={600} />
+```
 
-keltra turns your asset folders into types. A path that doesn't exist is a compile error, and the paths that do exist autocomplete as you type.
+Paths autocomplete from your `public/` folder. Typos fail the build.
 
-### How it works
+### Install
 
-1. You add the keltra integration for your framework.
-2. When you start your dev server, keltra scans your asset folders and generates a type manifest (types plus a small runtime module) into `.keltra/`.
-3. While the server runs, keltra watches the folders and regenerates the manifest whenever you add, rename, or delete a file.
-4. Production builds generate the manifest too, so type errors for missing assets show up in CI. You can also run `npx keltra generate` on its own.
+```bash
+npx keltra init
+```
 
-Use whichever API you prefer: a typed [`assetPath()`](https://usekeltra.vercel.app/reference/asset-path) helper, or a drop-in [`<Image>`](https://usekeltra.vercel.app/reference/image) component. Both read the same generated manifest.
+That's the whole setup. `keltra init` installs keltra, writes a `keltra.config.ts`, adds `.keltra/` to your `.gitignore`, wires up your `tsconfig` and framework config, and generates the first manifest.
 
-### What you get
+See [Getting Started](https://usekeltra.vercel.app/introduction/getting-started) for a walkthrough, or [Framework support](https://usekeltra.vercel.app/guides/frameworks) for the current list.
 
-- **Autocomplete** for every file in your asset folders.
-- **Compile-time errors** for paths that don't exist, often with a "did you mean" suggestion.
-- **Base path support**, so images keep working when your site is served from a sub-path.
-- **A CLI** that sets a project up and regenerates the manifest in CI.
+### What it does
 
-### Framework support
+- **Autocomplete** for every file in your asset folders
+- **Compile-time errors** for paths that don't exist
+- **Base path support**, so images keep working under a sub-path
+- **A CLI** for setup and CI
 
-| Framework                                   | Status    | Entry point                        |
-| ------------------------------------------- | --------- | ---------------------------------- |
-| Vite (React, Vue, Svelte, plain TypeScript) | Available | `keltra/vite`                      |
-| Next.js                                     | Available | `keltra/next`, `keltra/image/next` |
-| Nuxt, Astro, SvelteKit, webpack             | Planned   |                                    |
+Works with Vite and Next.js today. More frameworks planned.
 
-See [Framework support](https://usekeltra.vercel.app/guides/frameworks) for details.
+### Documentation
 
-### Next steps
+Full docs live at **[Official Website](https://usekeltra.vercel.app)**:
 
-Continue with [Getting Started](https://usekeltra.vercel.app/introduction/getting-started) to set up your first project.
+- [What is Keltra?](https://usekeltra.vercel.app/introduction/what-is-keltra) — the problem and how it works
+- [Getting Started](https://usekeltra.vercel.app/introduction/getting-started) — set up in an existing project
+- [Vite guide](https://usekeltra.vercel.app/guides/vite) / [Next.js guide](https://usekeltra.vercel.app/guides/nextjs)
+- [Configuration](https://usekeltra.vercel.app/reference/config) — every option in `keltra.config.ts`
+- [CLI](https://usekeltra.vercel.app/reference/cli) — `init`, `generate`, `update`
+- [Troubleshooting](https://usekeltra.vercel.app/guides/troubleshooting)
 
 ### License
 

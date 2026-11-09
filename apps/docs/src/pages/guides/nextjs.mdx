@@ -51,6 +51,22 @@ Next.js's default `include` list doesn't mention `.keltra`, so add `".keltra/*.d
 
 It also copies your `basePath` into the build, so `assetPath` can follow it.
 
+## Plugin reference
+
+```ts
+function withKeltra(
+  nextConfig?: NextConfig | Promise<NextConfig> | NextConfigFunction,
+  options?: KeltraConfig,
+): NextConfigFunction;
+```
+
+- `nextConfig` is your Next.js config. It can be an object or a function, like any `next.config`.
+- `options` accepts the same fields as [`keltra.config.ts`](/reference/config). They are merged over the config file, and the plugin's values win.
+
+It returns a config function, which Next.js accepts anywhere it accepts a config. Your own settings are kept as they are.
+
+If you export a function from your config, `withKeltra` calls it with the same phase and context, then adds its changes to the result.
+
 ## Using the paths
 
 ```tsx [app/page.tsx]
@@ -99,6 +115,6 @@ The repository includes a working app in [`examples/next-app`](https://github.co
 
 ## Related
 
-- [Next.js plugin reference](/reference/next-plugin)
 - [Configuration](/reference/config)
-- [Troubleshooting](/guides/troubleshooting)
+- [assetPath](/reference/asset-path)
+- [Image](/reference/image)

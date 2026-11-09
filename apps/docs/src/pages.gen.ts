@@ -6,9 +6,9 @@ import type { PathsForPages } from 'waku/router'
 // prettier-ignore
 type Page =
   | { path: '/changelog'; render: 'static' }
+  | { path: '/guides/any-framework'; render: 'static' }
   | { path: '/guides/ci'; render: 'static' }
   | { path: '/guides/deployment'; render: 'static' }
-  | { path: '/guides/frameworks'; render: 'static' }
   | { path: '/guides/nextjs'; render: 'static' }
   | { path: '/guides/troubleshooting'; render: 'static' }
   | { path: '/guides/vite'; render: 'static' }
@@ -20,8 +20,6 @@ type Page =
   | { path: '/reference/config'; render: 'static' }
   | { path: '/reference/generated-files'; render: 'static' }
   | { path: '/reference/image'; render: 'static' }
-  | { path: '/reference/next-plugin'; render: 'static' }
-  | { path: '/reference/vite-plugin'; render: 'static' }
 
 // prettier-ignore
 declare module 'waku/router' {

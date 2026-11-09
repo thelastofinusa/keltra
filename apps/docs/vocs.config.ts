@@ -153,12 +153,13 @@ export default defineConfig({
       items: [
         {
           text: "Integrations",
+          collapsed: false,
           items: [
             { text: "Vite", link: "/guides/vite" },
             { text: "Next.js", link: "/guides/nextjs" },
           ],
         },
-        { text: "Framework support", link: "/guides/frameworks" },
+        { text: "Any framework", link: "/guides/any-framework" },
         { text: "Deployment", link: "/guides/deployment" },
         { text: "Continuous integration", link: "/guides/ci" },
         { text: "Troubleshooting", link: "/guides/troubleshooting" },
@@ -172,8 +173,6 @@ export default defineConfig({
         { text: "CLI", link: "/reference/cli" },
         { text: "assetPath", link: "/reference/asset-path" },
         { text: "Image", link: "/reference/image" },
-        { text: "Vite plugin", link: "/reference/vite-plugin" },
-        { text: "Next.js plugin", link: "/reference/next-plugin" },
         { text: "Generated files", link: "/reference/generated-files" },
       ],
     },

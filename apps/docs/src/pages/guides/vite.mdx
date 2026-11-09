@@ -30,14 +30,6 @@ export default defineConfig({
 The CLI (`keltra generate`) only reads `keltra.config.ts`. Keeping your settings there means the dev server and CI always agree. Options passed to `keltra()` still work and override the file.
 :::
 
-## What the plugin does
-
-- **On `vite build` and when the dev server starts**, it scans your asset folders and writes the manifest to `.keltra/`.
-- **While the dev server runs**, it watches the folders. Adding, removing, or renaming a file regenerates the manifest, and the terminal shows `[keltra] manifest updated`.
-- **When the server closes**, it stops watching, so the process exits cleanly.
-
-Editing the contents of a file does nothing, since that can't change the types.
-
 ## Using the paths
 
 ```tsx [src/App.tsx]
@@ -62,11 +54,39 @@ export default function App() {
 
 The base path also applies when your app is rendered on the server through Vite, so server and client output match.
 
+## Plugin reference
+
+```ts
+function keltra(options?: KeltraConfig): Plugin;
+```
+
+`options` accepts the same fields as [`keltra.config.ts`](/reference/config). They are merged over the config file, and the plugin's values win.
+
+| Vite hook | What keltra does |
+| --- | --- |
+| `configResolved` | Loads `keltra.config.ts` from the project root and merges your options over it |
+| `buildStart` | Generates the manifest. Runs for `vite build` and when the dev server starts |
+| `configureServer` | Starts watching the asset folders (dev server only) |
+| `buildEnd` | Stops the watcher |
+
+The plugin logs through Vite's logger, only when something changed:
+
+```text
+[keltra] generated 12 asset paths
+[keltra] manifest updated (13 asset paths)
+```
+
+## Requirements
+
+- Vite 5 or newer. Tested on Vite 8.
+- `vite` is an optional peer dependency of `keltra`, so you only need it when you use this plugin.
+
 ## Example project
 
 The repository includes a working app in [`examples/vite-app`](https://github.com/thelastofinusa/keltra/tree/main/examples/vite-app).
 
 ## Related
 
-- [Vite plugin reference](/reference/vite-plugin)
 - [Configuration](/reference/config)
+- [assetPath](/reference/asset-path)
+- [Image](/reference/image)
