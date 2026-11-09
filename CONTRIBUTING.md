@@ -63,7 +63,7 @@ Every user-facing change to `keltra` needs a changeset. It's how versions and th
 bun run changeset
 ```
 
-Pick `keltra`, choose `patch` / `minor` / `major`, and write a one-line summary in the past tense (e.g. _"Fix `Img` dropping the base path on Next.js"_). Commit the generated `.changeset/*.md` with your PR. Docs, examples, and internal-only changes don't need one.
+Pick `keltra`, choose `patch` / `minor` / `major`, and write a one-line summary in the past tense (e.g. _"Fix `Image` dropping the base path on Next.js"_). Commit the generated `.changeset/*.md` with your PR. Docs, examples, and internal-only changes don't need one.
 
 ### Docs
 

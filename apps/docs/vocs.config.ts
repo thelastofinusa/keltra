@@ -1,3 +1,5 @@
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import {
   Changelog,
   defineConfig,
@@ -9,7 +11,112 @@ import {
 } from "vocs/config";
 import pkg from "../../packages/keltra/package.json" with { type: "json" };
 
-const { version } = pkg;
+// ---------------------------------------------------------------------------
+// npm stats: version + downloads, cached for 1 hour
+// ---------------------------------------------------------------------------
+
+type NpmStats = {
+  version: string;
+  weeklyDownloads: number | null;
+  monthlyDownloads: number | null;
+};
+
+type CacheEntry = { fetchedAt: number; data: NpmStats };
+
+const CACHE_TTL_MS = 60 * 60 * 1000;
+const CACHE_FILE = join(
+  import.meta.dirname,
+  "node_modules/.cache/npm-stats-keltra.json",
+);
+
+async function fetchNpmStats(packageName: string): Promise<NpmStats> {
+  const [versionRes, weeklyRes, monthlyRes] = await Promise.all([
+    fetch(`https://registry.npmjs.org/${packageName}/latest`),
+    fetch(`https://api.npmjs.org/downloads/point/last-week/${packageName}`),
+    fetch(`https://api.npmjs.org/downloads/point/last-month/${packageName}`),
+  ]);
+
+  if (!versionRes.ok || !weeklyRes.ok || !monthlyRes.ok) {
+    throw new Error(
+      `npm API returned ${versionRes.status}/${weeklyRes.status}/${monthlyRes.status}`,
+    );
+  }
+
+  const [versionData, weeklyData, monthlyData] = await Promise.all([
+    versionRes.json(),
+    weeklyRes.json(),
+    monthlyRes.json(),
+  ]);
+
+  return {
+    version: versionData.version,
+    weeklyDownloads: weeklyData.downloads ?? null,
+    monthlyDownloads: monthlyData.downloads ?? null,
+  };
+}
+
+async function getNpmStats(packageName: string): Promise<NpmStats> {
+  // 1. Fresh cache
+  if (existsSync(CACHE_FILE)) {
+    try {
+      const cached: CacheEntry = JSON.parse(readFileSync(CACHE_FILE, "utf8"));
+      if (Date.now() - cached.fetchedAt < CACHE_TTL_MS) return cached.data;
+    } catch {
+      // corrupt cache — fall through
+    }
+  }
+
+  // 2. Fetch and re-write cache
+  try {
+    const data = await fetchNpmStats(packageName);
+    mkdirSync(dirname(CACHE_FILE), { recursive: true });
+    writeFileSync(
+      CACHE_FILE,
+      JSON.stringify({ fetchedAt: Date.now(), data } satisfies CacheEntry),
+    );
+    return data;
+  } catch (error) {
+    console.warn("[vocs.config] Failed to fetch npm stats:", error);
+
+    // 3. Stale cache as last resort
+    if (existsSync(CACHE_FILE)) {
+      try {
+        const cached: CacheEntry = JSON.parse(readFileSync(CACHE_FILE, "utf8"));
+        console.warn("[vocs.config] Using stale cache.");
+        return cached.data;
+      } catch {
+        // ignore
+      }
+    }
+
+    // 4. Hard fallback: local package.json, no download count
+    return {
+      version: pkg.version,
+      weeklyDownloads: null,
+      monthlyDownloads: null,
+    };
+  }
+}
+
+function formatCount(n: number | null): string | null {
+  if (n == null) return null;
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}k`;
+  return n.toLocaleString("en-US");
+}
+
+const stats = await getNpmStats("keltra");
+const monthlyLabel = formatCount(stats.monthlyDownloads);
+// Swap the line below in if you'd rather show weekly:
+// const monthlyLabel = formatCount(stats.weeklyDownloads);
+
+const versionLabel = `v${stats.version}${
+  monthlyLabel ? ` • ${monthlyLabel}/mo` : ""
+}`;
+
+// ---------------------------------------------------------------------------
+// Config
+// ---------------------------------------------------------------------------
 
 export default defineConfig({
   title: "Keltra - Auto-complete for your Web Assets",
@@ -24,8 +131,6 @@ export default defineConfig({
     light: "/logo-tight-light.svg",
     dark: "/logo-tight-dark.svg",
   },
-
-  // accentColor: "light-dark(#2563eb, #60a5fa)",
 
   socials: [
     {
@@ -66,7 +171,7 @@ export default defineConfig({
         { text: "Configuration", link: "/reference/config" },
         { text: "CLI", link: "/reference/cli" },
         { text: "assetPath", link: "/reference/asset-path" },
-        { text: "Img", link: "/reference/image" },
+        { text: "Image", link: "/reference/image" },
         { text: "Vite plugin", link: "/reference/vite-plugin" },
         { text: "Next.js plugin", link: "/reference/next-plugin" },
         { text: "Generated files", link: "/reference/generated-files" },
@@ -184,15 +289,7 @@ export default defineConfig({
         ),
     },
     {
-      text: "Troubleshooting",
-      link: "/guides/troubleshooting",
-      // match: (path) =>
-      //   Boolean(
-      //     path?.startsWith("/introduction") || path?.startsWith("/guides"),
-      //   ),
-    },
-    {
-      text: `v${version}`,
+      text: versionLabel,
       items: [
         {
           text: "NPM",

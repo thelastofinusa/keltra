@@ -42,13 +42,13 @@ Editing the contents of a file does nothing, since that can't change the types.
 
 ```tsx [src/App.tsx]
 import { assetPath } from "keltra";
-import { Img } from "keltra/image";
+import { Image } from "keltra/image";
 
 export default function App() {
   return (
     <>
       <img src={assetPath("/logo.svg")} alt="Logo" />
-      <Img src="/images/hero.svg" alt="Hero" width={480} height={240} priority />
+      <Image src="/images/hero.svg" alt="Hero" width={480} height={240} priority />
     </>
   );
 }
@@ -56,7 +56,7 @@ export default function App() {
 
 ## Base path
 
-`assetPath` and `Img` read Vite's `base` option, so a site served from `/repo/` gets `/repo/logo.svg` without any extra code. See [Deployment](/guides/deployment).
+`assetPath` and `Image` read Vite's `base` option, so a site served from `/repo/` gets `/repo/logo.svg` without any extra code. See [Deployment](/guides/deployment).
 
 ## Server rendering
 

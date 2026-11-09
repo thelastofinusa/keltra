@@ -1,12 +1,12 @@
 # Image [An img element with typed paths]
 
-`Img` is a small wrapper around the native `img` element. Its `src` autocompletes from your asset folders, the base path is applied for you, and images load lazily by default.
+`Image` is a small wrapper around the native `img` element. Its `src` autocompletes from your asset folders, the base path is applied for you, and images load lazily by default.
 
 ```tsx
-import { Img } from "keltra/image";
+import { Image } from "keltra/image";
 
 export function Hero() {
-  return <Img src="/images/hero.png" alt="Hero" width={1200} height={600} />;
+  return <Image src="/images/hero.png" alt="Hero" width={1200} height={600} />;
 }
 ```
 
@@ -32,12 +32,12 @@ Every other attribute of the native `img` element is passed through, including `
 
 ## What it doesn't do
 
-`Img` doesn't resize, compress, or convert images. It serves the file you point it at. For automatic optimization, use `next/image` through `keltra/image/next`.
+`Image` doesn't resize, compress, or convert images. It serves the file you point it at. For automatic optimization, use `next/image` through `keltra/image/next`.
 
 ## Next.js
 
 ```tsx
-import { Img } from "keltra/image/next";
+import { Image } from "keltra/image/next";
 ```
 
 `keltra/image/next` re-exports `next/image` with a typed `src`. Everything else, including optimization, `fill`, `sizes`, and `placeholder`, is Next.js behavior, and Next applies `basePath` itself.

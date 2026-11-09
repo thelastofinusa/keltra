@@ -142,13 +142,13 @@ keltra generates the manifest when the server starts and keeps it up to date whi
 
 ```tsx [src/App.tsx]
 import { assetPath } from "keltra";
-import { Img } from "keltra/image";
+import { Image } from "keltra/image";
 
 export default function App() {
   return (
     <>
       <img src={assetPath("/logo.svg")} alt="Logo" />
-      <Img src="/images/hero.png" alt="Hero" width={1200} height={600} />
+      <Image src="/images/hero.png" alt="Hero" width={1200} height={600} />
     </>
   );
 }

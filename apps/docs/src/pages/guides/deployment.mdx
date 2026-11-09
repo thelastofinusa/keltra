@@ -47,7 +47,7 @@ export default withKeltra({
 });
 ```
 
-`assetPath("/logo.svg")` returns `/docs/logo.svg`. `Img` from `keltra/image/next` uses `next/image`, which applies `basePath` on its own. Next.js serves `public/` files under the base path, so those URLs resolve. As with Vite, the value is fixed at build time, so rebuild after you change `basePath`.
+`assetPath("/logo.svg")` returns `/docs/logo.svg`. `Image` from `keltra/image/next` uses `next/image`, which applies `basePath` on its own. Next.js serves `public/` files under the base path, so those URLs resolve. As with Vite, the value is fixed at build time, so rebuild after you change `basePath`.
 
 ## Caching
 

@@ -15,7 +15,7 @@ keltra turns your asset folders into types. A path that doesn't exist is a compi
 3. While the server runs, keltra watches the folders and regenerates the manifest whenever you add, rename, or delete a file.
 4. Production builds generate the manifest too, so type errors for missing assets show up in CI. You can also run `npx keltra generate` on its own.
 
-Use whichever API you prefer: a typed [`assetPath()`](https://usekeltra.vercel.app/reference/asset-path) helper, or a drop-in [`<Img>`](https://usekeltra.vercel.app/reference/image) component. Both read the same generated manifest.
+Use whichever API you prefer: a typed [`assetPath()`](https://usekeltra.vercel.app/reference/asset-path) helper, or a drop-in [`<Image>`](https://usekeltra.vercel.app/reference/image) component. Both read the same generated manifest.
 
 ### What you get
 

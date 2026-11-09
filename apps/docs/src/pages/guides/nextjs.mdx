@@ -55,13 +55,13 @@ It also copies your `basePath` into the build, so `assetPath` can follow it.
 
 ```tsx [app/page.tsx]
 import { assetPath } from "keltra";
-import { Img } from "keltra/image/next";
+import { Image } from "keltra/image/next";
 
 export default function Page() {
   return (
     <>
       <img src={assetPath("/logo.svg")} alt="Logo" width={64} height={64} />
-      <Img src="/images/hero.png" alt="Hero" width={1200} height={600} priority />
+      <Image src="/images/hero.png" alt="Hero" width={1200} height={600} priority />
     </>
   );
 }
@@ -69,7 +69,7 @@ export default function Page() {
 
 `assetPath` works in server and client components, and gives the same result on both, so there are no hydration mismatches.
 
-`Img` from `keltra/image/next` is `next/image` with a typed `src`. Everything else, including optimization, `fill`, `sizes`, and `placeholder`, is regular Next.js behavior. See the [Image reference](/reference/image).
+`Image` from `keltra/image/next` is `next/image` with a typed `src`. Everything else, including optimization, `fill`, `sizes`, and `placeholder`, is regular Next.js behavior. See the [Image reference](/reference/image).
 
 ## Base path
 
@@ -84,7 +84,7 @@ export default withKeltra({
 | What you write | What you get |
 | --- | --- |
 | `assetPath("/logo.svg")` | `/docs/logo.svg` |
-| `Img` with `src="/images/hero.png"` | Handled by `next/image`, which applies `basePath` itself |
+| `Image` with `src="/images/hero.png"` | Handled by `next/image`, which applies `basePath` itself |
 
 Next.js serves `public/` files under the base path, so those URLs resolve. See [Deployment](/guides/deployment).
 

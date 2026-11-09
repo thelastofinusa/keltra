@@ -3,7 +3,7 @@ import type { ImgHTMLAttributes, ReactElement } from "react";
 // `Register` interface that `.keltra/register.d.ts` augments.
 import { type AssetPath, assetPath } from "../index";
 
-export interface ImgProps
+export interface ImageProps
   extends Omit<
     ImgHTMLAttributes<HTMLImageElement>,
     "src" | "alt" | "width" | "height"
@@ -30,7 +30,7 @@ export interface ImgProps
  * A plain `<img>` with a typed `src`, the app's base path applied, and
  * sensible loading defaults. It does not resize or convert images.
  */
-export function Img({
+export function Image({
   src,
   alt,
   width,
@@ -41,7 +41,7 @@ export function Img({
   decoding,
   style,
   ...rest
-}: ImgProps): ReactElement {
+}: ImageProps): ReactElement {
   return (
     <img
       {...rest}
