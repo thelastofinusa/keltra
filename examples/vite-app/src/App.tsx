@@ -55,11 +55,11 @@ export function App() {
             {/* Method 2 */}
             <div className="border-border bg-card text-card-foreground space-y-3 rounded-xl border p-5">
               <h3 className="text-primary text-sm font-medium">
-                2. Using Next.js Image (`keltra/image/next`)
+                2. Using the Img component (`keltra/image`)
               </h3>
               <p className="text-muted-foreground text-xs">
-                Drop-in replacement for{" "}
-                <code className="font-mono">next/image</code> with typed{" "}
+                Drop-in replacement for an{" "}
+                <code className="font-mono">&lt;img&gt;</code> tag with typed{" "}
                 <code className="font-mono">src</code> strings.
               </p>
               <pre className="bg-muted text-foreground overflow-x-auto rounded p-3 font-mono text-xs">
