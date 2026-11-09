@@ -1,5 +1,5 @@
 import { assetPath } from "keltra";
-import { Img } from "keltra/image";
+import { Image } from "keltra/image";
 import { ModeToggle } from "./components/mode-toggle";
 
 export function App() {
@@ -28,26 +28,6 @@ export function App() {
               public/
             </code>{" "}
             directory.
-          </p>
-        </div>
-
-        {/* TSCONFIG SETUP */}
-        <div className="space-y-1 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-900 dark:text-amber-200">
-          <h3 className="flex items-center gap-2 font-semibold">
-            ⚠️ tsconfig setup
-          </h3>
-          <p className="text-xs leading-relaxed opacity-90">
-            `keltra init` adds this for you. If you set up keltra manually, add
-            <code className="bg-background/50 rounded px-1 py-0.5 font-mono">
-              ".keltra/*.d.ts"
-            </code>{" "}
-            to your `tsconfig.app.json` `include`. Use that exact pattern — not
-            just{" "}
-            <code className="bg-background/50 rounded px-1 py-0.5 font-mono">
-              ".keltra"
-            </code>
-            — otherwise TypeScript skips the dot-prefixed folder and paths stay
-            plain strings.
           </p>
         </div>
 
@@ -83,7 +63,7 @@ export function App() {
                 <code className="font-mono">src</code> strings.
               </p>
               <pre className="bg-muted text-foreground overflow-x-auto rounded p-3 font-mono text-xs">
-                {`<Img 
+                {`<Image 
   src="/KT.png" 
   width={80} 
   height={80} 
@@ -110,7 +90,7 @@ export function App() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
             {/* KT.png */}
             <div className="border-border bg-card text-card-foreground flex flex-col items-center justify-center gap-3 rounded-xl border p-4">
-              <Img src="/KT.png" alt="KT" width={64} height={64} />
+              <Image src="/KT.png" alt="KT" width={64} height={64} />
               <div className="text-center">
                 <p className="font-mono text-xs font-medium">/KT.png</p>
                 <span className="text-muted-foreground text-[10px]">
