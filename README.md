@@ -1,6 +1,12 @@
 ## Keltra
 
-**Autocomplete for your web assets.** keltra scans your asset folders and generates a typed manifest, so every image and file path in your code gets autocomplete and type-checking — a renamed or missing file becomes a compile error instead of a 404 in production.
+**Autocomplete for your web assets.**
+
+[![npm version](https://img.shields.io/npm/v/keltra)](https://www.npmjs.com/package/keltra)
+[![npm monthly downloads](https://img.shields.io/npm/dm/keltra)](https://www.npmjs.com/package/keltra)
+[![License](https://img.shields.io/github/license/thelastofinusa/keltra)](https://github.com/thelastofinusa/keltra/blob/main/LICENSE)
+
+Keltra scans your asset folders and generates a typed manifest, so every image and file path in your code gets autocomplete and type-checking — a renamed or missing file becomes a compile error instead of a 404 in production.
 
 ```ts
 import { assetPath } from "keltra";
