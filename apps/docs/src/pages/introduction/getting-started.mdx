@@ -39,7 +39,7 @@ bunx keltra init
 
 :::
 
-The CLI detects your framework (asking you to confirm it), installs keltra if needed, writes `keltra.config.ts`, adds `.keltra/` to your `.gitignore`, generates the first manifest, and — when it can do so safely — adds `".keltra/*.d.ts"` to your tsconfig and wires up `next.config.ts` or `vite.config.ts`. Add `-y` to skip the questions and accept the detected defaults. See the [CLI reference](/reference/cli) for every option.
+The CLI detects your framework (asking you to confirm it), installs keltra if needed, writes `keltra.config.ts`, adds `.keltra/` to your `.gitignore`, generates the first manifest, and — when it can do so safely — adds `".keltra/*.d.ts"` to your tsconfig (`tsconfig.app.json` for Vite) and wires up your framework config. Add `-y` to skip the questions and accept the detected defaults. See the [CLI reference](/reference/cli) for every option.
 
 :::tip
 Prefer to see exactly what `keltra init` changes? Each edit is listed under *Setup Summary* when the command finishes, and it never overwrites your existing config — it only adds keltra's required lines.
@@ -51,7 +51,7 @@ keltra supports Vite and Next.js today. See [Any framework](/guides/any-framewor
 
 ## Manual setup
 
-Prefer to do it yourself? These are the same steps `keltra init` performs, minus the framework picker. `keltra init` also wires your framework config (`next.config.ts` or `vite.config.ts`) for you, and falls back to printing the step if it can't edit the file safely.
+Prefer to do it yourself? These are the same steps `keltra init` performs, minus the framework picker. `keltra init` also wires your framework config for you, and falls back to printing the step if it can't edit the file safely.
 
 ::::steps
 
@@ -142,19 +142,19 @@ keltra generates the manifest when the server starts and keeps it up to date whi
 
 ```tsx [src/App.tsx]
 import { assetPath } from "keltra";
-import { Image } from "keltra/image";
+import { KTImg } from "keltra/image";
 
 export default function App() {
   return (
     <>
       <img src={assetPath("/logo.svg")} alt="Logo" />
-      <Image src="/images/hero.png" alt="Hero" width={1200} height={600} />
+      <KTImg src="/images/hero.png" alt="Hero" width={1200} height={600} />
     </>
   );
 }
 ```
 
-Both `assetPath` and `Image` autocomplete from the files in your asset folders. A path that doesn't exist fails the type check:
+Both `assetPath` and `KTImg` autocomplete from the files in your asset folders. A path that doesn't exist fails the type check:
 
 ```ts
 assetPath("/images/hreo.png");

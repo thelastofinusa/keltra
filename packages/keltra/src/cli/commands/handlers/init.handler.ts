@@ -16,9 +16,8 @@ import chalk from "chalk";
 import type { Command } from "commander";
 import { createKeltra, type KeltraConfig } from "../../../core";
 import {
+  addFrameworkIntegration,
   addKeltraTypesToTsConfig,
-  addNextIntegration,
-  addViteIntegration,
   type EditStatus,
   findTsConfigFile,
   KELTRA_TYPES_GLOB,
@@ -230,10 +229,8 @@ export const initCommand = () => {
       }
 
       let frameworkConfigStatus: EditStatus = "skipped";
-      if (framework === "next") {
-        frameworkConfigStatus = await addNextIntegration(root);
-      } else if (framework === "vite") {
-        frameworkConfigStatus = await addViteIntegration(root);
+      if (info.integration) {
+        frameworkConfigStatus = await addFrameworkIntegration(root, framework);
       }
 
       spinner.succeed("Project wired up");
@@ -272,8 +269,11 @@ export const initCommand = () => {
       }
 
       if (info.integration) {
+        const integrationFile = path.join(root, info.integration.file);
         summaryItems.push({
-          title: `${info.integration.file}: ${chalk.cyan(relative(root, info.integration.file))}`,
+          title: `${info.integration.file}: ${chalk.cyan(
+            relative(root, integrationFile),
+          )}`,
           description:
             frameworkConfigStatus === "added"
               ? "Added keltra integration"

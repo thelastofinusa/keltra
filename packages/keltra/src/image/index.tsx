@@ -29,8 +29,11 @@ export interface ImageProps
 /**
  * A plain `<img>` with a typed `src`, the app's base path applied, and
  * sensible loading defaults. It does not resize or convert images.
+ *
+ * Named `KTImg` so it can be used alongside `next/image` in the same file
+ * without a naming clash.
  */
-export function Image({
+export function KTImg({
   src,
   alt,
   width,
@@ -66,3 +69,6 @@ export function Image({
     />
   );
 }
+
+/** Back-compat alias. Prefer `KTImg` to avoid clashing with `next/image`. */
+export const Image = KTImg;

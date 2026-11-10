@@ -34,13 +34,13 @@ The CLI (`keltra generate`) only reads `keltra.config.ts`. Keeping your settings
 
 ```tsx [src/App.tsx]
 import { assetPath } from "keltra";
-import { Image } from "keltra/image";
+import { KTImg } from "keltra/image";
 
 export default function App() {
   return (
     <>
       <img src={assetPath("/logo.svg")} alt="Logo" />
-      <Image src="/images/hero.svg" alt="Hero" width={480} height={240} priority />
+      <KTImg src="/images/hero.svg" alt="Hero" width={480} height={240} priority />
     </>
   );
 }
@@ -48,7 +48,7 @@ export default function App() {
 
 ## Base path
 
-`assetPath` and `Image` read Vite's `base` option, so a site served from `/repo/` gets `/repo/logo.svg` without any extra code. See [Deployment](/guides/deployment).
+`assetPath` and `KTImg` read Vite's `base` option, so a site served from `/repo/` gets `/repo/logo.svg` without any extra code. See [Deployment](/guides/deployment).
 
 ## Server rendering
 

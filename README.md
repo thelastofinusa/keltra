@@ -4,10 +4,10 @@
 
 ```ts
 import { assetPath } from "keltra";
-import { Image } from "keltra/image";
+import { KTImg } from "keltra/image";
 
 <img src={assetPath("/logo.svg")} alt="Logo" />
-<Image src="/images/hero.png" alt="Hero" width={1200} height={600} />
+<KTImg src="/images/hero.png" alt="Hero" width={1200} height={600} />
 ```
 
 Paths autocomplete from your `public/` folder. Typos fail the build.

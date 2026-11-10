@@ -124,30 +124,34 @@ export async function addNextIntegration(root: string): Promise<EditStatus> {
 }
 
 // ---------------------------------------------------------------------------
-// Vite config
+// Framework config edits
 // ---------------------------------------------------------------------------
 
-export async function addViteIntegration(root: string): Promise<EditStatus> {
-  const file = [
-    "vite.config.ts",
-    "vite.config.mts",
-    "vite.config.js",
-    "vite.config.mjs",
-  ]
-    .map((name) => join(root, name))
-    .find(existsSync);
+/** Shared helper for configs that take a `plugins: [...]` array (Vite,
+ * SvelteKit, webpack, ...). Inserts `plugin` into the plugins array — or
+ * creates one inside `defineConfig({ ... })` — and adds the import line,
+ * unless the config already references the integration. */
+async function addFrameworkPlugin(
+  root: string,
+  options: {
+    files: string[];
+    importSpecifier: string; // e.g. "keltra/vite"
+    plugin: string; // e.g. "keltra()"
+  },
+): Promise<EditStatus> {
+  const file = options.files.map((name) => join(root, name)).find(existsSync);
   if (!file) return "skipped";
 
   let content = await readFile(file, "utf8");
-  if (content.includes("keltra/vite")) return "already";
+  if (content.includes(options.importSpecifier)) return "already";
 
-  const pluginName = "keltra()";
   const pluginsPattern = /plugins\s*:\s*\[([\s\S]*?)\]/;
   const pluginsMatch = pluginsPattern.exec(content);
 
   if (pluginsMatch) {
     const inner = pluginsMatch[1]!.trim();
-    const newInner = inner === "" ? pluginName : `${pluginName}, ${inner}`;
+    const newInner =
+      inner === "" ? options.plugin : `${options.plugin}, ${inner}`;
     content =
       content.slice(0, pluginsMatch.index) +
       `plugins: [${newInner}]` +
@@ -159,22 +163,131 @@ export async function addViteIntegration(root: string): Promise<EditStatus> {
     const insertAt = defineMatch.index + defineMatch[0].length;
     content =
       content.slice(0, insertAt) +
-      `\n  plugins: [${pluginName}],` +
+      `\n  plugins: [${options.plugin}],` +
       content.slice(insertAt);
   }
 
+  const importLine = `import keltra from "${options.importSpecifier}";`;
   if (
-    !content.includes('from "keltra/vite"') &&
-    !content.includes("from 'keltra/vite'")
+    !content.includes(`from "${options.importSpecifier}"`) &&
+    !content.includes(`from '${options.importSpecifier}'`)
   ) {
-    content = insertAfterLastImport(
-      content,
-      'import keltra from "keltra/vite";',
-    );
+    content = insertAfterLastImport(content, importLine);
   }
 
   await writeFile(file, content);
   return "added";
+}
+
+export async function addViteIntegration(root: string): Promise<EditStatus> {
+  return addFrameworkPlugin(root, {
+    files: [
+      "vite.config.ts",
+      "vite.config.mts",
+      "vite.config.js",
+      "vite.config.mjs",
+    ],
+    importSpecifier: "keltra/vite",
+    plugin: "keltra()",
+  });
+}
+
+export async function addSveltekitIntegration(
+  root: string,
+): Promise<EditStatus> {
+  return addFrameworkPlugin(root, {
+    files: [
+      "vite.config.ts",
+      "vite.config.mts",
+      "vite.config.js",
+      "vite.config.mjs",
+    ],
+    importSpecifier: "keltra/sveltekit",
+    plugin: "keltra()",
+  });
+}
+
+export async function addWebpackIntegration(root: string): Promise<EditStatus> {
+  return addFrameworkPlugin(root, {
+    files: ["webpack.config.js", "webpack.config.ts", "webpack.config.mjs"],
+    importSpecifier: "keltra/webpack",
+    plugin: "keltra()",
+  });
+}
+
+export async function addAstroIntegration(root: string): Promise<EditStatus> {
+  const file = ["astro.config.mjs", "astro.config.ts"]
+    .map((name) => join(root, name))
+    .find(existsSync);
+  if (!file) return "skipped";
+
+  let content = await readFile(file, "utf8");
+  if (content.includes("keltra/astro")) return "already";
+
+  content = insertAfterLastImport(
+    content,
+    'import keltra from "keltra/astro";',
+  );
+
+  const defineMatch = /defineConfig\s*\(\s*\{/.exec(content);
+  if (!defineMatch) return "skipped";
+  const insertAt = defineMatch.index + defineMatch[0].length;
+  content =
+    content.slice(0, insertAt) +
+    `\n  integrations: [keltra()],` +
+    content.slice(insertAt);
+
+  await writeFile(file, content);
+  return "added";
+}
+
+export async function addNuxtIntegration(root: string): Promise<EditStatus> {
+  const file = ["nuxt.config.ts", "nuxt.config.js", "nuxt.config.mjs"]
+    .map((name) => join(root, name))
+    .find(existsSync);
+  if (!file) return "skipped";
+
+  let content = await readFile(file, "utf8");
+  if (content.includes('"keltra/nuxt"') || content.includes("'keltra/nuxt'"))
+    return "already";
+
+  // Don't clobber an existing `modules` array.
+  if (/modules\s*:/.test(content)) return "skipped";
+
+  const defineMatch = /defineNuxtConfig\s*\(\s*\{/.exec(content);
+  if (!defineMatch) return "skipped";
+  const insertAt = defineMatch.index + defineMatch[0].length;
+  content =
+    content.slice(0, insertAt) +
+    `\n  modules: ["keltra/nuxt"],` +
+    content.slice(insertAt);
+
+  await writeFile(file, content);
+  return "added";
+}
+
+/** Wires up the framework config for every framework keltra knows about.
+ * Returns "skipped" for "other" and when there is nothing safe to edit. */
+export async function addFrameworkIntegration(
+  root: string,
+  framework: Framework,
+): Promise<EditStatus> {
+  switch (framework) {
+    case "next":
+      return addNextIntegration(root);
+    case "nuxt":
+      return addNuxtIntegration(root);
+    case "astro":
+      return addAstroIntegration(root);
+    case "sveltekit":
+      return addSveltekitIntegration(root);
+    case "vite":
+      return addViteIntegration(root);
+    case "webpack":
+      return addWebpackIntegration(root);
+    default:
+      return "skipped";
+  }
 }
 
 // ---------------------------------------------------------------------------
