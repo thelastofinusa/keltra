@@ -12,12 +12,9 @@ export type ImageProps = Omit<NextImageProps, "src"> & {
  * `priority`, `sizes`, `placeholder`...) is Next.js behaviour. Next applies
  * `basePath` itself, so no base handling is needed here.
  *
- * Named `KTImg` so it can be used alongside `next/image` in the same file
+ * Named `Image` so it can be used alongside `next/image` in the same file
  * without a naming clash.
  */
-export function KTImg(props: ImageProps): ReactElement {
+export function Image(props: ImageProps): ReactElement {
   return createElement(NextImage, props);
 }
-
-/** Back-compat alias. Prefer `KTImg` to avoid clashing with `next/image`. */
-export const Image = KTImg;

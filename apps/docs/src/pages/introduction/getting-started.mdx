@@ -142,19 +142,19 @@ keltra generates the manifest when the server starts and keeps it up to date whi
 
 ```tsx [src/App.tsx]
 import { assetPath } from "keltra";
-import { KTImg } from "keltra/image";
+import { Image } from "keltra/image";
 
 export default function App() {
   return (
     <>
       <img src={assetPath("/logo.svg")} alt="Logo" />
-      <KTImg src="/images/hero.png" alt="Hero" width={1200} height={600} />
+      <Image src="/images/hero.png" alt="Hero" width={1200} height={600} />
     </>
   );
 }
 ```
 
-Both `assetPath` and `KTImg` autocomplete from the files in your asset folders. A path that doesn't exist fails the type check:
+Both `assetPath` and `Image` autocomplete from the files in your asset folders. A path that doesn't exist fails the type check:
 
 ```ts
 assetPath("/images/hreo.png");

@@ -1,5 +1,5 @@
 import { assetPath } from "keltra";
-import { KTImg } from "keltra/image";
+import { Image } from "keltra/image";
 import { ModeToggle } from "./components/mode-toggle";
 
 export function App() {
@@ -63,7 +63,7 @@ export function App() {
                 <code className="font-mono">src</code> strings.
               </p>
               <pre className="bg-muted text-foreground overflow-x-auto rounded p-3 font-mono text-xs">
-                {`<KTImg 
+                {`<Image 
   src="/KT.png" 
   width={80} 
   height={80} 
@@ -90,11 +90,11 @@ export function App() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
             {/* KT.png */}
             <div className="border-border bg-card text-card-foreground flex flex-col items-center justify-center gap-3 rounded-xl border p-4">
-              <KTImg src="/KT.png" alt="KT" width={64} height={64} />
+              <Image src="/KT.png" alt="KT" width={64} height={64} />
               <div className="text-center">
                 <p className="font-mono text-xs font-medium">/KT.png</p>
                 <span className="text-muted-foreground text-[10px]">
-                  Rendered with &lt;KTImg&gt;
+                  Rendered with &lt;Image&gt;
                 </span>
               </div>
             </div>

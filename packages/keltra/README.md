@@ -10,10 +10,10 @@ Keltra scans your asset folders and generates a typed manifest, so every image a
 
 ```ts
 import { assetPath } from "keltra";
-import { KTImg } from "keltra/image";
+import { Image } from "keltra/image";
 
 <img src={assetPath("/logo.svg")} alt="Logo" />
-<KTImg src="/images/hero.png" alt="Hero" width={1200} height={600} />
+<Image src="/images/hero.png" alt="Hero" width={1200} height={600} />
 ```
 
 Paths autocomplete from your `public/` folder. Typos fail the build.
